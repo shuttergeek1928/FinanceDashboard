@@ -1,5 +1,5 @@
 using FinanceDashboard.Service.EncryptorsDecryptors;
-using FinanceDashboard.Service.Entities;
+using FinanceDashboard.Service.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

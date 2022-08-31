@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinanceDashboard.Data.Entities.User
+namespace FinanceDashboard.Service.Data.Entities
 {
     public class User
     {

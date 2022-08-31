@@ -1,9 +1,9 @@
-﻿using FinanceDashboard.Data.Entities.User;
+﻿using FinanceDashboard.Service.Data.Entities;
 using FinanceDashboard.Service.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace FinanceDashboard.Service.Entities
+namespace FinanceDashboard.Service.Data.Entities
 {
     public class FinanceDashboardContext : DbContext
     {
