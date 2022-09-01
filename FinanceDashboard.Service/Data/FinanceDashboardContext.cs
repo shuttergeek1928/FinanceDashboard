@@ -3,12 +3,12 @@ using FinanceDashboard.Service.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace FinanceDashboard.Service.Data.Entities
+namespace FinanceDashboard.Service.Data
 {
     public class FinanceDashboardContext : DbContext
     {
         private readonly IPasswordMethods _passwordMethods;
-        private readonly string _password; 
+        private readonly string _password;
         private readonly string _passwordHash;
         private readonly string _salt;
         public FinanceDashboardContext(DbContextOptions<FinanceDashboardContext> options, IPasswordMethods passwordMethods) : base(options)
@@ -23,7 +23,8 @@ namespace FinanceDashboard.Service.Data.Entities
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<User>().HasKey(table => new {
+            builder.Entity<User>().HasKey(table => new
+            {
                 table.AccpuntId,
                 table.Id
             });

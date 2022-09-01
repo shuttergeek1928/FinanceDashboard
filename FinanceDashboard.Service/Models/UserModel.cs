@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinanceDashboard.Service.Models
 {
     public class UserModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int AccpuntId { get; set; }
 
@@ -33,7 +31,6 @@ namespace FinanceDashboard.Service.Models
         [Required]
         public string PasswordHashHistory { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
         [Required]
         public string MobileNumber { get; set; }
 

@@ -1,9 +1,10 @@
-﻿using FinanceDashboard.Service.Models;
+﻿using FinanceDashboard.Service.Data.Entities;
+using FinanceDashboard.Service.Models;
 
 namespace FinanceDashboard.Service.Data.IDataController
 {
-    public interface IUserDataController
+    public interface IUserDataController : ICommonDataController<User>
     {
-        Task<UserModel> Update(UserModel entity);
+        Task<User> Update(User entity);
     }
 }

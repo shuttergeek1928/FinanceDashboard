@@ -4,7 +4,7 @@ using FinanceDashboard.Service.Models;
 
 namespace FinanceDashboard.Service.Data.DataController
 {
-    public class UserDataController : CommonDataController<UserModel>, IUserDataController
+    public class UserDataController : CommonDataController<User>, IUserDataController
     {
         private readonly FinanceDashboardContext _context;
         public UserDataController(FinanceDashboardContext context) : base(context)
@@ -12,13 +12,15 @@ namespace FinanceDashboard.Service.Data.DataController
             _context = context;
         }
 
-        public async Task<UserModel> Update(UserModel entity)
+        public async Task<User> Update(User entity)
         {
             _context.Update(entity);
-            
-            await _context.SaveChangesAsync();
+
+            await this.SaveAsync();
 
             return entity;
         }
+
+        public async Task SaveAsync() => await _context.SaveChangesAsync();
     }
 }

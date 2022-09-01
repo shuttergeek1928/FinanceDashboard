@@ -1,5 +1,4 @@
-﻿using FinanceDashboard.Service.Data.Entities;
-using FinanceDashboard.Service.Data.IDataController;
+﻿using FinanceDashboard.Service.Data.IDataController;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceDashboard.Service.Data.DataController

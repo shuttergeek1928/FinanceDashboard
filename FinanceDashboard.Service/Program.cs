@@ -1,6 +1,9 @@
 using FinanceDashboard.Service.EncryptorsDecryptors;
-using FinanceDashboard.Service.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using FinanceDashboard.Service.Data.IDataController;
+using FinanceDashboard.Service.Data.DataController;
+using FinanceDashboard.Service;
+using FinanceDashboard.Service.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,9 @@ builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 });
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
+builder.Services.AddScoped<IUserDataController, UserDataController>();
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
