@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FinanceDashboard.Service.Migrations
+namespace FinanceDashboard.Data.SqlServer.Migrations
 {
-    public partial class initialUserEntity : Migration
+    public partial class InitialUserEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,7 @@ namespace FinanceDashboard.Service.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "AccountId", "Id", "CreatedOn", "DeletedBy", "DeletedOn", "Email", "FirstName", "HashingSalt", "InvalidPasswordCount", "IsLocked", "LastName", "MobileNumber", "Name", "PasswordHash", "PasswordHashHistory", "SecondFactorKey", "SecondFactorValidated", "VerifiedOn" },
-                values: new object[] { 1, new Guid("c168bc9c-4407-4f36-a615-9644fc30c25a"), new DateTime(2022, 9, 1, 6, 57, 58, 102, DateTimeKind.Local).AddTicks(2607), null, null, "atishay1928@outlook.com", "Atishay", "==4d8dh51d9c", null, null, "Vishwakarma", "9827766387", "Atishay Vishwakarma", "FSZ2d17i8jn8wewbvMuht62CYYaohPtv3b8xzlMGHTA=", "FSZ2d17i8jn8wewbvMuht62CYYaohPtv3b8xzlMGHTA=,", null, null, null });
+                values: new object[] { 1, new Guid("160c14f8-d9ee-47b0-a072-0bfffb9d461d"), new DateTime(2022, 9, 1, 22, 50, 56, 979, DateTimeKind.Local).AddTicks(3384), null, null, "atishay1928@outlook.com", "Atishay", "==4d8dh51d9c", null, null, "Vishwakarma", "9827766387", "Atishay Vishwakarma", "iuqagbrdfikhwboarnown;fmlmpqwjpmlml;m;'qe65464", "iuqagbrdfikhwboarnown;fmlmpqwjpmlml;m;'qe65464,", null, null, null });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

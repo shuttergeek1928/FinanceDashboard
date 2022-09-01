@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Service.Data.Entities;
+using FinanceDashboard.Models.Data.Entities;
 using FinanceDashboard.Service.Models;
 
 namespace FinanceDashboard.Service

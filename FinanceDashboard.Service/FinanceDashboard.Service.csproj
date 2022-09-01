@@ -23,4 +23,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FinanceDashboard.Models\FinanceDashboard.Data.SqlServer.csproj" />
+  </ItemGroup>
+
 </Project>

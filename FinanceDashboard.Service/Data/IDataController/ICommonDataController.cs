@@ -6,7 +6,7 @@ namespace FinanceDashboard.Service.Data.IDataController
     {
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeChildProperties = null);
         Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeChildProperties = null);
-        Task CreateAsync(T entity);
+        Task<T> CreateAsync(T entity);
         Task RemoveAsync(T entity);
         Task SaveAsync();
     }

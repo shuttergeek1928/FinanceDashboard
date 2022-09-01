@@ -1,4 +1,6 @@
-﻿using FinanceDashboard.Service.Data.IDataController;
+﻿using FinanceDashboard.Data.SqlServer;
+using FinanceDashboard.Models;
+using FinanceDashboard.Service.Data.IDataController;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceDashboard.Service.Data.DataController
@@ -53,10 +55,11 @@ namespace FinanceDashboard.Service.Data.DataController
             return await entities.ToListAsync();
         }
 
-        public virtual async Task CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
             await _dbContext.AddAsync(entity);
             await SaveAsync();
+            return entity;
         }
 
         public async Task RemoveAsync(T entity)

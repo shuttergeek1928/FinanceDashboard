@@ -1,4 +1,7 @@
-﻿using FinanceDashboard.Service.Data.Entities;
+﻿using AutoMapper;
+using FinanceDashboard.Data.SqlServer;
+using FinanceDashboard.Models;
+using FinanceDashboard.Models.Data.Entities;
 using FinanceDashboard.Service.Data.IDataController;
 using FinanceDashboard.Service.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +11,11 @@ namespace FinanceDashboard.Service.Data.DataController
     public class UserDataController : CommonDataController<User>, IUserDataController
     {
         private readonly FinanceDashboardContext _context;
-        public UserDataController(FinanceDashboardContext context) : base(context)
+        private readonly IMapper _mapper;
+        public UserDataController(FinanceDashboardContext context, IMapper mapper) : base(context)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<User> Update(User entity)
@@ -22,13 +27,14 @@ namespace FinanceDashboard.Service.Data.DataController
             return entity;
         }
 
-        public override async Task<User> CreateAsync(User entity)
+        public async Task<User> CreateUserAsync(UserCreateModel entity)
         {
-            await _context.User.AddAsync(entity);
+            await _context.User.AddAsync(_mapper.Map<User>(entity));
             await SaveAsync();
-            int accountID = _dbContext.Max(x => x.AccountId);
-            entity.AccountId = accountID;
-            return entity;
+            int accountID = _dbContext.Max(x => x.AccountId);           
+            User user = _mapper.Map<User>(entity);
+            user.AccountId = accountID;
+            return user;
         }
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();

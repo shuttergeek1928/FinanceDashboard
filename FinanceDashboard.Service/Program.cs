@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using FinanceDashboard.Service.Data.IDataController;
 using FinanceDashboard.Service.Data.DataController;
 using FinanceDashboard.Service;
-using FinanceDashboard.Service.Data;
+using FinanceDashboard.Data.SqlServer;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,11 @@ builder.Services.AddControllers(option =>
     jsonOption.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     // set as pascal case
     jsonOption.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
+
+builder.Services.AddMvc().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
 builder.Services.AddEndpointsApiExplorer();

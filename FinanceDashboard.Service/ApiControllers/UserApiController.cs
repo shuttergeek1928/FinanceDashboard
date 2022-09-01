@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Service.Data.Entities;
 using FinanceDashboard.Service.Data.IDataController;
 using FinanceDashboard.Service.Models;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +66,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
             try
             {
-                _response.Result = await _userDataController.CreateAsync(_mapper.Map<User>(user));
+                _response.Result = await _userDataController.CreateUserAsync(_mapper.Map<UserCreateModel>(user));
 
                 _response.StatusCode = HttpStatusCode.OK;
 

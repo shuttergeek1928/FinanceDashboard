@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceDashboard.Service", "FinanceDashboard.Service\FinanceDashboard.Service.csproj", "{9DD820F2-20A4-4084-94D8-F17C29947B11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceDashboard.Service", "FinanceDashboard.Service\FinanceDashboard.Service.csproj", "{9DD820F2-20A4-4084-94D8-F17C29947B11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceDashboard.Data.SqlServer", "FinanceDashboard.Models\FinanceDashboard.Data.SqlServer.csproj", "{44BB070C-F5EE-41D2-9ED2-205A4506F47F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceDashboard.Utilities", "FinanceDashboard.Utilities\FinanceDashboard.Utilities.csproj", "{85D02190-4B2F-449A-AA0A-7202556AFA18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{9DD820F2-20A4-4084-94D8-F17C29947B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD820F2-20A4-4084-94D8-F17C29947B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DD820F2-20A4-4084-94D8-F17C29947B11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44BB070C-F5EE-41D2-9ED2-205A4506F47F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44BB070C-F5EE-41D2-9ED2-205A4506F47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44BB070C-F5EE-41D2-9ED2-205A4506F47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44BB070C-F5EE-41D2-9ED2-205A4506F47F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
