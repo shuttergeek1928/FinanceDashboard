@@ -1,12 +1,16 @@
 using FinanceDashboard.Service.EncryptorsDecryptors;
-using FinanceDashboard.Service.Entities;
 using Microsoft.EntityFrameworkCore;
+using FinanceDashboard.Service.Data.IDataController;
+using FinanceDashboard.Service.Data.DataController;
+using FinanceDashboard.Service;
+using FinanceDashboard.Service.Data;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 
 builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 {
@@ -14,6 +18,19 @@ builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 });
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
+builder.Services.AddScoped<IUserDataController, UserDataController>();
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+builder.Services.AddControllers(option =>
+{
+    option.ReturnHttpNotAcceptable = true;
+}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters().AddJsonOptions(jsonOption =>
+{
+    jsonOption.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    // set as pascal case
+    jsonOption.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

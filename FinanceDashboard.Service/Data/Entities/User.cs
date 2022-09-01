@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinanceDashboard.Data.Entities.User
+namespace FinanceDashboard.Service.Data.Entities
 {
     public class User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
-        public int AccpuntId { get; set; }
+        public int AccountId { get; set; }
 
         [Required]
         [Key]
