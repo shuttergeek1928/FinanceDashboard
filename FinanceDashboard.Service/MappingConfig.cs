@@ -8,7 +8,9 @@ namespace FinanceDashboard.Service
     {
         public MappingConfig()
         {
-            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<User, UserDetailModel>().ReverseMap();
+            CreateMap<User, UserListModel>().ReverseMap();
+            CreateMap<User, UserCreateModel>().ReverseMap();
             //CreateMap<VillaUpdateModel, VillaModel>().ForMember(destinationModel => destinationModel.Id, options => options.Ignore());
         }
     }

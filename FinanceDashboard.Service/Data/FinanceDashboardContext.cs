@@ -1,5 +1,6 @@
 ﻿using FinanceDashboard.Service.Data.Entities;
 using FinanceDashboard.Service.EncryptorsDecryptors;
+using FinanceDashboard.Service.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -20,19 +21,22 @@ namespace FinanceDashboard.Service.Data
         }
 
         public DbSet<User> User { get; set; }
+        //public DbSet<UserListModel> UserList { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<User>().HasKey(table => new
             {
-                table.AccpuntId,
+                table.AccountId,
                 table.Id
             });
+
+            builder.Entity<User>().HasAlternateKey(c => c.Email).HasName("AlternateKey_Email");
 
             builder.Entity<User>().HasData(
                 new User()
                 {
-                    AccpuntId = 1,
+                    AccountId = 1,
                     Id = Guid.NewGuid(),
                     Name = "Atishay Vishwakarma",
                     FirstName = "Atishay",

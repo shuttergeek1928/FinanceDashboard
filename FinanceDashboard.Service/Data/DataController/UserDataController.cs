@@ -1,6 +1,7 @@
 ﻿using FinanceDashboard.Service.Data.Entities;
 using FinanceDashboard.Service.Data.IDataController;
 using FinanceDashboard.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceDashboard.Service.Data.DataController
 {
@@ -14,10 +15,19 @@ namespace FinanceDashboard.Service.Data.DataController
 
         public async Task<User> Update(User entity)
         {
-            _context.Update(entity);
+            _dbContext.Update(entity);
 
-            await this.SaveAsync();
+            await SaveAsync();
 
+            return entity;
+        }
+
+        public override async Task<User> CreateAsync(User entity)
+        {
+            await _context.User.AddAsync(entity);
+            await SaveAsync();
+            int accountID = _dbContext.Max(x => x.AccountId);
+            entity.AccountId = accountID;
             return entity;
         }
 

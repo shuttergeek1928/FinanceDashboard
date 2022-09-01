@@ -53,7 +53,7 @@ namespace FinanceDashboard.Service.Data.DataController
             return await entities.ToListAsync();
         }
 
-        public async Task CreateAsync(T entity)
+        public virtual async Task CreateAsync(T entity)
         {
             await _dbContext.AddAsync(entity);
             await SaveAsync();

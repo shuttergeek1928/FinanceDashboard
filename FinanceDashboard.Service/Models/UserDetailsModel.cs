@@ -1,16 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinanceDashboard.Service.Data.Entities
+namespace FinanceDashboard.Service.Models
 {
-    public class User
+    public class UserDetailModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int AccountId { get; set; }
 
         [Required]
-        [Key]
         public Guid Id { get; set; }
 
         [Required]
@@ -33,7 +30,6 @@ namespace FinanceDashboard.Service.Data.Entities
         [Required]
         public string PasswordHashHistory { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
         [Required]
         public string MobileNumber { get; set; }
 

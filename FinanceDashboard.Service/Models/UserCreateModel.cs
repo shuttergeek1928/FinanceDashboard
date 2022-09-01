@@ -2,13 +2,9 @@
 
 namespace FinanceDashboard.Service.Models
 {
-    public class UserModel
+    public class UserCreateModel
     {
         [Required]
-        public int AccpuntId { get; set; }
-
-        [Required]
-        [Key]
         public Guid Id { get; set; }
 
         [Required]

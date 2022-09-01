@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceDashboard.Service.Migrations
 {
     [DbContext(typeof(FinanceDashboardContext))]
-    [Migration("20220831113646_initialUserEntity")]
+    [Migration("20220901012758_initialUserEntity")]
     partial class initialUserEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,13 +24,13 @@ namespace FinanceDashboard.Service.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FinanceDashboard.Data.Entities.User.User", b =>
+            modelBuilder.Entity("FinanceDashboard.Service.Data.Entities.User", b =>
                 {
-                    b.Property<int>("AccpuntId")
+                    b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccpuntId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"), 1L, 1);
 
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -46,7 +46,7 @@ namespace FinanceDashboard.Service.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -91,16 +91,19 @@ namespace FinanceDashboard.Service.Migrations
                     b.Property<DateTime?>("VerifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AccpuntId", "Id");
+                    b.HasKey("AccountId", "Id");
+
+                    b.HasAlternateKey("Email")
+                        .HasName("AlternateKey_Email");
 
                     b.ToTable("User");
 
                     b.HasData(
                         new
                         {
-                            AccpuntId = 1,
-                            Id = new Guid("e7f52b42-b802-4d1e-a029-9aff55f18d56"),
-                            CreatedOn = new DateTime(2022, 8, 31, 17, 6, 45, 721, DateTimeKind.Local).AddTicks(8447),
+                            AccountId = 1,
+                            Id = new Guid("c168bc9c-4407-4f36-a615-9644fc30c25a"),
+                            CreatedOn = new DateTime(2022, 9, 1, 6, 57, 58, 102, DateTimeKind.Local).AddTicks(2607),
                             Email = "atishay1928@outlook.com",
                             FirstName = "Atishay",
                             HashingSalt = "==4d8dh51d9c",
