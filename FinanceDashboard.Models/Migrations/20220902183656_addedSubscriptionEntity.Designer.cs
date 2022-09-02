@@ -4,6 +4,7 @@ using FinanceDashboard.Data.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceDashboard.Data.SqlServer.Migrations
 {
     [DbContext(typeof(FinanceDashboardContext))]
-    partial class FinanceDashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20220902183656_addedSubscriptionEntity")]
+    partial class addedSubscriptionEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,6 +29,9 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -157,8 +162,8 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                         new
                         {
                             AccountId = 1,
-                            Id = new Guid("c9057a7e-8aaa-42b2-9a04-ef0811a6c329"),
-                            CreatedOn = new DateTime(2022, 9, 3, 0, 11, 18, 934, DateTimeKind.Local).AddTicks(9299),
+                            Id = new Guid("d781d6af-1a3c-4576-871e-27bab65534e6"),
+                            CreatedOn = new DateTime(2022, 9, 3, 0, 6, 55, 826, DateTimeKind.Local).AddTicks(8004),
                             Email = "atishay1928@outlook.com",
                             FirstName = "Atishay",
                             HashingSalt = "==4d8dh51d9c",

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using FinanceDashboard.Data.SqlServer;
-using FinanceDashboard.Models;
-using FinanceDashboard.Models.Data.Entities;
+using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Service.Data.IDataController;
 using FinanceDashboard.Service.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace FinanceDashboard.Service.Data.DataController
 {

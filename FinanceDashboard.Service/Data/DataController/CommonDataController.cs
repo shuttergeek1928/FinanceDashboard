@@ -1,5 +1,4 @@
 ﻿using FinanceDashboard.Data.SqlServer;
-using FinanceDashboard.Models;
 using FinanceDashboard.Service.Data.IDataController;
 using Microsoft.EntityFrameworkCore;
 
