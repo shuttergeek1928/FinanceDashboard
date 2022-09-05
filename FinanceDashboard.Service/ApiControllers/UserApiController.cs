@@ -27,7 +27,7 @@ namespace FinanceDashboard.Service.ApiControllers
         {
             try
             {
-                IEnumerable<UserListModel> villaList = _mapper.Map<List<UserListModel>>(await _userDataController.GetAllAsync());
+                IEnumerable<AccountListModel> villaList = _mapper.Map<List<AccountListModel>>(await _userDataController.GetAllAsync());
                 
                 _response.Result = villaList;
 
@@ -50,7 +50,7 @@ namespace FinanceDashboard.Service.ApiControllers
         public async Task<ActionResult<ApiResponse>> CreateDummyUser()
         {
 
-            UserDetailModel user = new UserDetailModel
+            AccountDetailModel user = new AccountDetailModel
             {
                 Id = Guid.NewGuid(),
                 Name = "Dummy Dummy",
@@ -66,7 +66,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
             try
             {
-                _response.Result = await _userDataController.CreateUserAsync(_mapper.Map<UserCreateModel>(user));
+                _response.Result = await _userDataController.CreateUserAsync(_mapper.Map<AccountCreateModel>(user));
 
                 _response.StatusCode = HttpStatusCode.OK;
 

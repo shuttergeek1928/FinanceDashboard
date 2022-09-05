@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinanceDashboard.Data.SqlServer.Entities
 {
-    public class User
+    public class Account
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
+        [Key]
         public int AccountId { get; set; }
 
         [Required]
@@ -53,5 +54,8 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public DateTime? DeletedOn { get; set; }
 
         public int? DeletedBy { get; set; }
+
+        //References
+        public List<Subscription> Subscriptions { get; set; }
     }
 }

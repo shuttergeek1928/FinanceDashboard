@@ -3,9 +3,9 @@ using FinanceDashboard.Service.Models;
 
 namespace FinanceDashboard.Service.Data.IDataController
 {
-    public interface IUserDataController : ICommonDataController<User>
+    public interface IUserDataController : ICommonDataController<Account>
     {
-        Task<User> Update(User entity);
-        Task<User> CreateUserAsync(UserCreateModel entity);
+        Task<Account> Update(Account entity);
+        Task<Account> CreateUserAsync(AccountCreateModel entity);
     }
 }

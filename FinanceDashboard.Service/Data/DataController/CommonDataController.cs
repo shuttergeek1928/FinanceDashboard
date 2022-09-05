@@ -1,6 +1,8 @@
 ﻿using FinanceDashboard.Data.SqlServer;
 using FinanceDashboard.Service.Data.IDataController;
 using Microsoft.EntityFrameworkCore;
+using FinanceDashboard.Utilities.Exceptions;
+using System.Linq.Expressions;
 
 namespace FinanceDashboard.Service.Data.DataController
 {
@@ -15,7 +17,7 @@ namespace FinanceDashboard.Service.Data.DataController
             _dbContext = _context.Set<T>();
         }
 
-        public async Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeChildProperties = null)
+        public virtual async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeChildProperties = null)
         {
             IQueryable<T> entities = _dbContext;
 
@@ -36,12 +38,12 @@ namespace FinanceDashboard.Service.Data.DataController
             return await entities.FirstOrDefaultAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(System.Linq.Expressions.Expression<Func<T, bool>>? filter = null, string? includeChildProperties = null)
+        public virtual async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeChildProperties = null)
         {
             IQueryable<T> entities = _dbContext;
 
-            if(filter != null)
-                entities= entities.Where(filter);
+            if (filter != null)
+                entities = entities.Where(filter);
 
             if (includeChildProperties != null)
             {
@@ -61,13 +63,13 @@ namespace FinanceDashboard.Service.Data.DataController
             return entity;
         }
 
-        public async Task RemoveAsync(T entity)
+        public virtual async Task RemoveAsync(T entity)
         {
             _dbContext.Remove(entity);
             await SaveAsync();
         }
 
-        public async Task SaveAsync()
+        public virtual async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }

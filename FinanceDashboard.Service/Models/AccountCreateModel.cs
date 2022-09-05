@@ -2,7 +2,7 @@
 
 namespace FinanceDashboard.Service.Models
 {
-    public class UserCreateModel
+    public class AccountCreateModel
     {
         [Required]
         public Guid Id { get; set; }

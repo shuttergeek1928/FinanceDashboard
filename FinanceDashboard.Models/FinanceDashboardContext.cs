@@ -8,7 +8,7 @@ namespace FinanceDashboard.Data.SqlServer
 {
     public class FinanceDashboardContext : DbContext
     {
-        //private readonly IPasswordMethods _passwordMethods;
+        private readonly IPasswordMethods _passwordMethods;
         private readonly string _password;
         private readonly string _passwordHash;
         private readonly string _salt;
@@ -25,56 +25,31 @@ namespace FinanceDashboard.Data.SqlServer
 
         public FinanceDashboardContext(DbContextOptions<FinanceDashboardContext> options) : base(options)
         {
-            _salt = "==4d8dh51d9c";
+            _salt = " @6ZD3aazp-zp";
             _password = "Password1!";
-            _passwordHash = "iuqagbrdfikhwboarnown;fmlmpqwjpmlml;m;'qe65464";
+            _passwordHash = "rlJuiL2QibBsb6S/cFinFP9BYEYx8bGObdhMJ0k3RIQ=";
         }
 
-        public DbSet<User> User { get; set; }
+        public DbSet<Account> Account { get; set; }
         public DbSet<Subscription> Subscription { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<User>().HasKey(table => new
+            builder.Entity<Account>().HasKey(table => new
             {
                 table.AccountId,
                 table.Id
             });
 
-            builder.Entity<User>().HasAlternateKey(c => c.Email).HasName("AlternateKey_Email");
+            builder.Entity<Account>().HasAlternateKey(c => c.Email).HasName("AlternateKey_Email");
 
-            User seedUser = new User()
+            builder.Entity<Account>().HasData(DataSeeding.SeedAccount);
+            builder.Entity<Subscription>().HasData(DataSeeding.SeedSubscription);
+
+            builder.Entity<Subscription>(table =>
             {
-                AccountId = 1,
-                Id = Guid.NewGuid(),
-                Name = "Atishay Vishwakarma",
-                FirstName = "Atishay",
-                LastName = "Vishwakarma",
-                Email = "atishay1928@outlook.com",
-                PasswordHash = _passwordHash,
-                HashingSalt = _salt,
-                PasswordHashHistory = _passwordHash + ",",
-                MobileNumber = "9827766387",
-                CreatedOn = DateTime.Now
-            };
-
-            builder.Entity<User>().HasData(seedUser);
-
-            //Subscription seedSubscription =
-            //    new Subscription()
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        User = seedUser,
-            //        SubscriptionName = "Netflix",
-            //        SubscribedOnEmail = "atishay1928@outlook.com",
-            //        SubscribedOnMobileNumber = "9827766387",
-            //        Password = "XYZ",
-            //        BillingDate = new DateTime(2022, 01, 01),
-            //        RenewalDate = new DateTime(2022, 02, 01),
-            //        RenewalCycle = 1,
-            //        Amount = 500,
-            //        RenewalAmount = 500,
-            //    };
+                table.HasOne(x => x.User).WithMany(y => y.Subscriptions).HasPrincipalKey(z => z.AccountId).OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 

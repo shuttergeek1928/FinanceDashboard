@@ -2,7 +2,7 @@
 
 namespace FinanceDashboard.Service.Models
 {
-    public class UserListModel
+    public class AccountListModel
     {
         [Required]
         public int AccountId { get; set; }

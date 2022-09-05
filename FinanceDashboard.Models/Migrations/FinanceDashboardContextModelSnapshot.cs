@@ -22,64 +22,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("BillingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CanceledBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CanceledOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsExpired")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("RenewalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("RenewalCycle")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("RenewalDate")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SubscribedOnEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubscribedOnMobileNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubscriptionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserAccountId", "UserId");
-
-                    b.ToTable("Subscription");
-                });
-
-            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.User", b =>
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Account", b =>
                 {
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
@@ -151,34 +94,111 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.HasAlternateKey("Email")
                         .HasName("AlternateKey_Email");
 
-                    b.ToTable("User");
+                    b.ToTable("Account");
 
                     b.HasData(
                         new
                         {
                             AccountId = 1,
-                            Id = new Guid("c9057a7e-8aaa-42b2-9a04-ef0811a6c329"),
-                            CreatedOn = new DateTime(2022, 9, 3, 0, 11, 18, 934, DateTimeKind.Local).AddTicks(9299),
+                            Id = new Guid("4a5e417f-e4a1-4915-af6a-a0875643e474"),
+                            CreatedOn = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "atishay1928@outlook.com",
                             FirstName = "Atishay",
-                            HashingSalt = "==4d8dh51d9c",
+                            HashingSalt = "@6ZD3aazp-zp",
                             LastName = "Vishwakarma",
                             MobileNumber = "9827766387",
                             Name = "Atishay Vishwakarma",
-                            PasswordHash = "iuqagbrdfikhwboarnown;fmlmpqwjpmlml;m;'qe65464",
-                            PasswordHashHistory = "iuqagbrdfikhwboarnown;fmlmpqwjpmlml;m;'qe65464,"
+                            PasswordHash = "rlJuiL2QibBsb6S/cFinFP9BYEYx8bGObdhMJ0k3RIQ=",
+                            PasswordHashHistory = "rlJuiL2QibBsb6S/cFinFP9BYEYx8bGObdhMJ0k3RIQ=,"
                         });
                 });
 
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
                 {
-                    b.HasOne("FinanceDashboard.Data.SqlServer.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserAccountId", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("BillingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CanceledBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CanceledOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsExpired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("RenewalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("RenewalCycle")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RenewalDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubscribedOnEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubscribedOnMobileNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubscriptionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Subscription");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6087fa18-1640-496e-84b3-2eeb629b45c0"),
+                            AccountId = 1,
+                            Amount = 500m,
+                            BillingDate = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsExpired = false,
+                            Password = "Password1!",
+                            RenewalAmount = 350m,
+                            RenewalCycle = 1,
+                            RenewalDate = new DateTime(2022, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscribedOnEmail = "atishay1928@outlook.com",
+                            SubscribedOnMobileNumber = "9827766387",
+                            SubscriptionName = "Netflix"
+                        });
+                });
+
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
+                {
+                    b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("AccountId")
+                        .HasPrincipalKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Account", b =>
+                {
+                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

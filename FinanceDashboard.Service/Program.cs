@@ -16,10 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
 builder.Services.AddScoped<IUserDataController, UserDataController>();
+builder.Services.AddScoped<ISucbscriptionDataController, SubscriptionDataController>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 

@@ -6,7 +6,7 @@ using FinanceDashboard.Service.Models;
 
 namespace FinanceDashboard.Service.Data.DataController
 {
-    public class UserDataController : CommonDataController<User>, IUserDataController
+    public class UserDataController : CommonDataController<Account>, IUserDataController
     {
         private readonly FinanceDashboardContext _context;
         private readonly IMapper _mapper;
@@ -16,21 +16,21 @@ namespace FinanceDashboard.Service.Data.DataController
             _mapper = mapper;
         }
 
-        public async Task<User> Update(User entity)
+        public async Task<Account> Update(Account entity)
         {
-            _dbContext.Update(entity);
+            _context.Account.Update(entity);
 
             await SaveAsync();
 
             return entity;
         }
 
-        public async Task<User> CreateUserAsync(UserCreateModel entity)
+        public async Task<Account> CreateUserAsync(AccountCreateModel entity)
         {
-            await _context.User.AddAsync(_mapper.Map<User>(entity));
+            await _context.Account.AddAsync(_mapper.Map<Account>(entity));
             await SaveAsync();
             int accountID = _dbContext.Max(x => x.AccountId);           
-            User user = _mapper.Map<User>(entity);
+            Account user = _mapper.Map<Account>(entity);
             user.AccountId = accountID;
             return user;
         }
