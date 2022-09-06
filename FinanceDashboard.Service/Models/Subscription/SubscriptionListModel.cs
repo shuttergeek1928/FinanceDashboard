@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinanceDashboard.Service.Models.Account;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinanceDashboard.Service.Models.Subscription
 {
@@ -7,7 +8,9 @@ namespace FinanceDashboard.Service.Models.Subscription
         [Required]
         public Guid Id { get; set; }
 
-        public AccountDetailModel User { get; set; }
+        public int AccountId { get; set; }
+
+        public AccountSummaryModel User { get; set; }
 
         [Required]
         public string SubscriptionName { get; set; }
@@ -38,5 +41,9 @@ namespace FinanceDashboard.Service.Models.Subscription
         public int? CanceledBy { get; set; }
 
         public bool IsExpired { get; set; }
+
+        public DateTime? LastUpdate { get; set; }
+
+        public int? LastUpdateBy { get; set; }
     }
 }

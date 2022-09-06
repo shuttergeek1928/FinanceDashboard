@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceDashboard.Service.Models
+namespace FinanceDashboard.Service.Models.Account
 {
     public class AccountCreateModel
     {
@@ -14,7 +14,7 @@ namespace FinanceDashboard.Service.Models
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-        
+
         [Required]
         public string Email { get; set; }
 

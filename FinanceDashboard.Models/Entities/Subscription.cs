@@ -44,5 +44,9 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public int? CanceledBy { get; set; }
 
         public bool IsExpired { get; set; }
+
+        public DateTime? LastUpdate { get; set; }
+
+        public int? LastUpdateBy { get; set; }
     }
 }

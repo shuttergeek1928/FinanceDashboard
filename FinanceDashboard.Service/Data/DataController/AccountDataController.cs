@@ -2,15 +2,15 @@
 using FinanceDashboard.Data.SqlServer;
 using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Service.Data.IDataController;
-using FinanceDashboard.Service.Models;
+using FinanceDashboard.Service.Models.Account;
 
 namespace FinanceDashboard.Service.Data.DataController
 {
-    public class UserDataController : CommonDataController<Account>, IUserDataController
+    public class AccountDataController : CommonDataController<Account>, IAccountDataController
     {
         private readonly FinanceDashboardContext _context;
         private readonly IMapper _mapper;
-        public UserDataController(FinanceDashboardContext context, IMapper mapper) : base(context)
+        public AccountDataController(FinanceDashboardContext context, IMapper mapper) : base(context)
         {
             _context = context;
             _mapper = mapper;

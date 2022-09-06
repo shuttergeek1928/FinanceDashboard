@@ -4,6 +4,7 @@ using FinanceDashboard.Data.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceDashboard.Data.SqlServer.Migrations
 {
     [DbContext(typeof(FinanceDashboardContext))]
-    partial class FinanceDashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20220905212855_addedLastUpdateInSubscription")]
+    partial class addedLastUpdateInSubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

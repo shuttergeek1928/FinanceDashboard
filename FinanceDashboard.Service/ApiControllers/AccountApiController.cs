@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FinanceDashboard.Service.Data.IDataController;
-using FinanceDashboard.Service.Models;
+using FinanceDashboard.Service.Models.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -9,15 +9,15 @@ namespace FinanceDashboard.Service.ApiControllers
 {
     [Route("api/[controller]/")]
     [ApiController]
-    public class UserApiController : ControllerBase
+    public class AccountApiController : ControllerBase
     {
-        private readonly IUserDataController _userDataController;
+        private readonly IAccountDataController _accountDataController;
         private readonly IMapper _mapper;
         protected readonly ApiResponse _response;
 
-        public UserApiController(IUserDataController userDataController, IMapper mapper)
+        public AccountApiController(IAccountDataController accountDataController, IMapper mapper)
         {
-            _userDataController = userDataController;
+            _accountDataController = accountDataController;
             _mapper = mapper;
             _response = new();
         }
@@ -27,9 +27,9 @@ namespace FinanceDashboard.Service.ApiControllers
         {
             try
             {
-                IEnumerable<AccountListModel> villaList = _mapper.Map<List<AccountListModel>>(await _userDataController.GetAllAsync());
+                IEnumerable<AccountListModel> accounts = _mapper.Map<List<AccountListModel>>(await _accountDataController.GetAllAsync());
                 
-                _response.Result = villaList;
+                _response.Result = accounts;
 
                 _response.StatusCode = HttpStatusCode.OK;
 
@@ -66,7 +66,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
             try
             {
-                _response.Result = await _userDataController.CreateUserAsync(_mapper.Map<AccountCreateModel>(user));
+                _response.Result = await _accountDataController.CreateUserAsync(_mapper.Map<AccountCreateModel>(user));
 
                 _response.StatusCode = HttpStatusCode.OK;
 

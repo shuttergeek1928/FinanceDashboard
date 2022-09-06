@@ -20,7 +20,7 @@ builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 });
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
-builder.Services.AddScoped<IUserDataController, UserDataController>();
+builder.Services.AddScoped<IAccountDataController, AccountDataController>();
 builder.Services.AddScoped<ISucbscriptionDataController, SubscriptionDataController>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
