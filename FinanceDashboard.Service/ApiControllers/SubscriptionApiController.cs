@@ -1,38 +1,37 @@
-﻿using AutoMapper;
-using FinanceDashboard.Data.SqlServer.Entities;
-using FinanceDashboard.Service.Data.IDataController;
-using FinanceDashboard.Service.Models;
-using FinanceDashboard.Service.Models.Account;
-using FinanceDashboard.Service.Models.Subscription;
-using Microsoft.AspNetCore.Http;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq.Expressions;
-using System.Net;
+using Microsoft.AspNetCore.JsonPatch;
+using FinanceDashboard.Data.SqlServer.Entities;
+using FinanceDashboard.Service.Models.Subscription;
+using FinanceDashboard.Data.SqlServer.DataController;
 
 namespace FinanceDashboard.Service.ApiControllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/subscription/")]
     [ApiController]
     public class SubscriptionApiController : ControllerBase
     {
-        private readonly ISucbscriptionDataController _sucbscriptionDataController;
-        private readonly IAccountDataController _accountDataController;
         private readonly IMapper _mapper;
         protected readonly ApiResponse _response;
-        public SubscriptionApiController(IAccountDataController accountDataController, ISucbscriptionDataController sucbscriptionDataController, IMapper mapper)
+        private readonly SubscriptionDataController _sdc;
+        private readonly AccountDataController _adc;
+
+        public SubscriptionApiController(AccountDataController adc, IMapper mapper, SubscriptionDataController sdc)
         {
-            _sucbscriptionDataController = sucbscriptionDataController;
-            _accountDataController = accountDataController;
+            _adc = adc;
             _mapper = mapper;
             _response = new();
+            _sdc = sdc;
         }
 
         [HttpGet]
+        [Route("all")]
         public async Task<ActionResult<ApiResponse>> GetAllSubscription(string? includeChildProperty = null)
         {
             try
             {
-                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sucbscriptionDataController.GetAllAsync(includeChildProperties: includeChildProperty));
+                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sdc.GetAllAsync(includeChildProperties: includeChildProperty));
 
                 _response.Result = subscriptions;
 
@@ -51,12 +50,36 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         [HttpGet]
-        [Route("get/all-subscription-by-accountId")]
+        [Route("all/accountId/{accountId:int}")]
         public async Task<ActionResult<ApiResponse>> GetAllSubscriptionByAccountId(int? accountId, string? includeChildProperty = null)
         {
             try
             {
-                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sucbscriptionDataController.GetAllAsync(x => x.User.AccountId == accountId, includeChildProperties: includeChildProperty));
+                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sdc.GetAllAsync(x => x.User.AccountId == accountId, includeChildProperties: includeChildProperty));
+
+                _response.Result = subscriptions;
+
+                _response.StatusCode = HttpStatusCode.OK;
+
+                return Ok(_response);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+
+                _response.Errors = new List<string>() { e.ToString() };
+            }
+
+            return _response;
+        }
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<ActionResult<ApiResponse>> GetSubscriptionById(Guid id, string? includeChildProperty = null)
+        {
+            try
+            {
+                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sdc.GetAllAsync(x => x.Id == id, includeChildProperties: includeChildProperty));
 
                 _response.Result = subscriptions;
 
@@ -75,13 +98,13 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         [HttpPut]
-        [Route("update/subscription/{id:Guid}")]
+        [Route("update/{id:Guid}")]
         public async Task<ActionResult<ApiResponse>> UpdateSubscription(SubscriptionUpdateModel model, Guid id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Subscription subscription = _mapper.Map<Subscription>(await _sucbscriptionDataController.GetAsync(x => x.Id == id));
+            Subscription subscription = _mapper.Map<Subscription>(await _sdc.GetAsync(x => x.Id == id));
 
             if (subscription == null)
                 throw new Exception($"Subscription of id: {id} does not exist");
@@ -92,7 +115,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
                 subscription.LastUpdateBy = subscription.AccountId;
 
-                _response.Result = await _sucbscriptionDataController.UpdateSubscription(_mapper.Map<SubscriptionUpdateModel, Subscription>(model, subscription));
+                _response.Result = await _sdc.UpdateSubscription(_mapper.Map<SubscriptionUpdateModel, Subscription>(model, subscription));
 
                 _response.StatusCode = HttpStatusCode.OK;
 
@@ -109,20 +132,20 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         [HttpPost]
-        [Route("create/new-subscription")]
+        [Route("create/new")]
         public async Task<ActionResult<ApiResponse>> CreateNewSubscription(SubscriptionCreateModel model)
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var account = await _accountDataController.GetAsync(x => x.AccountId == model.AccountId);
+            var account = await _adc.GetAsync(x => x.AccountId == model.AccountId);
 
             if (account == null)
                 throw new Exception($"Account id: {model.AccountId} does not exist");
 
             try
             {
-                _response.Result = await _sucbscriptionDataController.CreateAsync(_mapper.Map<Subscription>(model));
+                _response.Result = await _sdc.CreateAsync(_mapper.Map<Subscription>(model));
 
                 _response.StatusCode = HttpStatusCode.OK;
 
@@ -139,10 +162,10 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         [HttpDelete]
-        [Route("delete/subscription/{id:Guid}")]
+        [Route("delete/{id:Guid}")]
         public async Task<ActionResult<ApiResponse>> DeleteSubscriptionById(Guid id)
         {
-            Subscription subscription = _mapper.Map<Subscription>(await _sucbscriptionDataController.GetAsync(x => x.Id == id));
+            Subscription subscription = _mapper.Map<Subscription>(await _sdc.GetAsync(x => x.Id == id));
 
             if (subscription == null)
             {
@@ -154,7 +177,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
             try
             {
-                await _sucbscriptionDataController.RemoveAsync(subscription);
+                await _sdc.RemoveAsync(subscription);
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = $"Subscription of id: {id} deleted";
             }
@@ -168,10 +191,10 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         [HttpGet]
-        [Route("get/totalSubscriptionValue/byAccountId/{accountId:int}")]
+        [Route("totalSubscriptionValue/byAccountId/{accountId:int}")]
         public async Task<ActionResult<ApiResponse>> GetTotalAmount(int? accountId)
         {
-            var account = await _accountDataController.GetAsync(x => x.AccountId == accountId);
+            var account = await _adc.GetAsync(x => x.AccountId == accountId);
 
             if (account == null)
             {
@@ -183,7 +206,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
             try
             {
-                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sucbscriptionDataController.GetAllAsync(x => x.User.AccountId == accountId));
+                IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sdc.GetAllAsync(x => x.User.AccountId == accountId));
 
                 _response.Result = CalculateTotalAmount(subscriptions);
 
@@ -202,10 +225,10 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         [HttpGet]
-        [Route("get/allActiveOrExpiredSubscriptions/byAccountId")]
+        [Route("allActiveOrExpiredSubscriptions/byAccountId")]
         public async Task<ActionResult<ApiResponse>> GetTotalAmount(int accountId, bool? isExpired = false)
         {
-            var account = await _accountDataController.GetAsync(x => x.AccountId == accountId);
+            var account = await _adc.GetAsync(x => x.AccountId == accountId);
 
             if (account == null)
             {
@@ -219,7 +242,7 @@ namespace FinanceDashboard.Service.ApiControllers
             {
                 IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>
                     (
-                        await _sucbscriptionDataController.GetAllAsync(x => 
+                        await _sdc.GetAllAsync(x => 
                         x.User.AccountId == accountId &&
                         x.IsExpired == isExpired)
                     );
@@ -237,6 +260,19 @@ namespace FinanceDashboard.Service.ApiControllers
                 _response.Errors = new List<string>() { e.ToString() };
             }
 
+            return _response;
+        }
+
+        [HttpPatch]
+        [Route("expire/{id:Guid}")]
+        public async Task<ActionResult<ApiResponse>> ExpireSubscriptionsById(Guid id)
+        {
+            JsonPatchDocument<Subscription> sub = new JsonPatchDocument<Subscription>();
+            
+            sub.Replace(e => e.IsExpired, true);
+            
+            _response.Result = await _sdc.PatchSubscription(sub, id);
+            
             return _response;
         }
 
@@ -262,14 +298,14 @@ namespace FinanceDashboard.Service.ApiControllers
                 SubscriptionName = "Test Dummy Subscriptions",
                 SubscribedOnEmail = "Test@yopmail.com",
                 BillingDate = DateTime.Now,
-                RenewalDate = DateTime.Now.AddDays(30),
+                RenewalDate = DateTime.Now.AddMonths(1),
                 Amount = 599,
                 RenewalCycle = 1
             };
 
             try
             {
-                _response.Result = await _sucbscriptionDataController.CreateAsync(_mapper.Map<Subscription>(model));
+                _response.Result = await _sdc.CreateAsync(_mapper.Map<Subscription>(model));
 
                 _response.StatusCode = HttpStatusCode.OK;
 

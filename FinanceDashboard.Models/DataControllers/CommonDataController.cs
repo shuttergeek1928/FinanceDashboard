@@ -1,12 +1,9 @@
-﻿using FinanceDashboard.Data.SqlServer;
-using FinanceDashboard.Service.Data.IDataController;
-using Microsoft.EntityFrameworkCore;
-using FinanceDashboard.Utilities.Exceptions;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace FinanceDashboard.Service.Data.DataController
+namespace FinanceDashboard.Data.SqlServer.DataController
 {
-    public class CommonDataController<T> : ICommonDataController<T> where T : class
+    public class CommonDataController<T> where T : class
     {
         private readonly FinanceDashboardContext _context;
         internal DbSet<T> _dbContext;
@@ -55,14 +52,12 @@ namespace FinanceDashboard.Service.Data.DataController
 
             return await entities.ToListAsync();
         }
-
         public virtual async Task<T> CreateAsync(T entity)
         {
             await _dbContext.AddAsync(entity);
             await SaveAsync();
             return entity;
         }
-
         public virtual async Task RemoveAsync(T entity)
         {
             _dbContext.Remove(entity);

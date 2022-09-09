@@ -1,12 +1,9 @@
 using FinanceDashboard.Service.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
-using FinanceDashboard.Service.Data.IDataController;
-using FinanceDashboard.Service.Data.DataController;
 using FinanceDashboard.Service;
 using FinanceDashboard.Data.SqlServer;
-using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
+using FinanceDashboard.Data.SqlServer.DataController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +17,9 @@ builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 });
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
-builder.Services.AddScoped<IAccountDataController, AccountDataController>();
-builder.Services.AddScoped<ISucbscriptionDataController, SubscriptionDataController>();
+builder.Services.AddScoped<SubscriptionDataController>();
+builder.Services.AddScoped<AccountDataController>();
+builder.Services.AddScoped<TestAccountDataController>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 

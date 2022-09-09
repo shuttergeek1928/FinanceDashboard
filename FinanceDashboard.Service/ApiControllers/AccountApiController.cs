@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Service.Data.IDataController;
+using FinanceDashboard.Data.SqlServer.DataController;
+using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Service.Models.Account;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,13 +11,13 @@ namespace FinanceDashboard.Service.ApiControllers
     [ApiController]
     public class AccountApiController : ControllerBase
     {
-        private readonly IAccountDataController _accountDataController;
+        private readonly AccountDataController _adc;
         private readonly IMapper _mapper;
         protected readonly ApiResponse _response;
 
-        public AccountApiController(IAccountDataController accountDataController, IMapper mapper)
+        public AccountApiController(AccountDataController adc, IMapper mapper)
         {
-            _accountDataController = accountDataController;
+            _adc = adc;
             _mapper = mapper;
             _response = new();
         }
@@ -27,7 +27,7 @@ namespace FinanceDashboard.Service.ApiControllers
         {
             try
             {
-                IEnumerable<AccountListModel> accounts = _mapper.Map<List<AccountListModel>>(await _accountDataController.GetAllAsync());
+                IEnumerable<AccountListModel> accounts = _mapper.Map<List<AccountListModel>>(await _adc.GetAllAsync());
                 
                 _response.Result = accounts;
 
@@ -66,7 +66,7 @@ namespace FinanceDashboard.Service.ApiControllers
 
             try
             {
-                _response.Result = await _accountDataController.CreateUserAsync(_mapper.Map<AccountCreateModel>(user));
+                _response.Result = await _adc.CreateUserAsync(_mapper.Map<Account>(user));
 
                 _response.StatusCode = HttpStatusCode.OK;
 
