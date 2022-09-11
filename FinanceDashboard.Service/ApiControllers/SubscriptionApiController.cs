@@ -18,6 +18,11 @@ namespace FinanceDashboard.Service.ApiControllers
             _sc = sc;
         }
 
+        /// <summary>
+        /// Returns all subscription irrespective of account.
+        /// </summary>
+        /// <param name="includeChildProperty"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("all")]
         public async Task<ActionResult<ApiResponse>> GetAllSubscription(string? includeChildProperty = null)
