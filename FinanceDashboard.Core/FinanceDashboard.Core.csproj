@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FinanceDashboard.Data\FinanceDashboard.Data.csproj" />
-    <ProjectReference Include="..\FinanceDashboard.Models\FinanceDashboard.Data.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>
