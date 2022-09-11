@@ -1,11 +1,29 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Models.Account;
 using FinanceDashboard.Models.Subscription;
+using FinanceDashboard.Data.SqlServer.Entities;
 
-namespace FinanceDashboard.Service
+namespace FinanceDashboard.Core
 {
-    public class MappingConfig : Profile
+    public class ObjectMapper
+    {
+        private readonly Lazy<IMapper> Lazy = new Lazy<IMapper>(() =>
+        {
+            var MapperConfigurations = new MapperConfiguration(maps =>
+            {
+                // This line ensures that internal properties are also mapped over.
+                maps.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+                maps.AddProfile<MappingConfig>();
+            });
+
+            var mapper = MapperConfigurations.CreateMapper();
+            return mapper;
+        });
+
+        public IMapper Mapper => Lazy.Value;
+    }
+
+    internal class MappingConfig : Profile
     {
         public MappingConfig()
         {
@@ -21,7 +39,6 @@ namespace FinanceDashboard.Service
             CreateMap<Subscription, SubscriptionListModel>().ReverseMap();
             CreateMap<Subscription, SubscriptionCreateModel>().ReverseMap();
             CreateMap<Subscription, SubscriptionUpdateModel>().ReverseMap();
-            //CreateMap<Subscription, Task<Subscription>>().ReverseMap();
         }
     }
 }

@@ -1,10 +1,8 @@
-using FinanceDashboard.Service.EncryptorsDecryptors;
+using FinanceDashboard.Core.Controllers;
+using FinanceDashboard.Data.DataController;
+using FinanceDashboard.Data.SqlServer;
+using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
-using FinanceDashboard.Service.Data.IDataController;
-using FinanceDashboard.Service.Data.DataController;
-using FinanceDashboard.Service;
-using FinanceDashboard.Service.Data;
-using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
-builder.Services.AddScoped<IUserDataController, UserDataController>();
+builder.Services.AddScoped<SubscriptionDataController>();
+builder.Services.AddScoped<AccountDataController>();
+builder.Services.AddScoped<AccountController>();
+builder.Services.AddScoped<SubscriptionController>();
 
-builder.Services.AddAutoMapper(typeof(MappingConfig));
+//builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 builder.Services.AddControllers(option =>
 {
@@ -30,6 +32,11 @@ builder.Services.AddControllers(option =>
     jsonOption.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     // set as pascal case
     jsonOption.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
+
+builder.Services.AddMvc().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
 builder.Services.AddEndpointsApiExplorer();

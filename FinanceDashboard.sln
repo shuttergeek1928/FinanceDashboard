@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceDashboard.Service", "FinanceDashboard.Service\FinanceDashboard.Service.csproj", "{9DD820F2-20A4-4084-94D8-F17C29947B11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceDashboard.Service", "FinanceDashboard.Service\FinanceDashboard.Service.csproj", "{9DD820F2-20A4-4084-94D8-F17C29947B11}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceDashboard.Utilities", "FinanceDashboard.Utilities\FinanceDashboard.Utilities.csproj", "{85D02190-4B2F-449A-AA0A-7202556AFA18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceDashboard.Core", "FinanceDashboard.Core\FinanceDashboard.Core.csproj", "{A558E4A7-D7D3-4548-BFBC-66823EF64EE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceDashboard.Data", "FinanceDashboard.Data\FinanceDashboard.Data.csproj", "{C51A354E-9AAD-41B8-9F4D-054FD8F063C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceDashboard.Data.SqlServer", "FinanceDashboard.Data.SqlServer\FinanceDashboard.Data.SqlServer.csproj", "{6F50AC43-3464-4FC0-8998-A8783AE22971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceDashboard.Models", "FinanceDashboard.Models\FinanceDashboard.Models.csproj", "{024A1953-5532-4F14-AE4E-368CB634EEA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{9DD820F2-20A4-4084-94D8-F17C29947B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD820F2-20A4-4084-94D8-F17C29947B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DD820F2-20A4-4084-94D8-F17C29947B11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D02190-4B2F-449A-AA0A-7202556AFA18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A558E4A7-D7D3-4548-BFBC-66823EF64EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A558E4A7-D7D3-4548-BFBC-66823EF64EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A558E4A7-D7D3-4548-BFBC-66823EF64EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A558E4A7-D7D3-4548-BFBC-66823EF64EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C51A354E-9AAD-41B8-9F4D-054FD8F063C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C51A354E-9AAD-41B8-9F4D-054FD8F063C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C51A354E-9AAD-41B8-9F4D-054FD8F063C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C51A354E-9AAD-41B8-9F4D-054FD8F063C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F50AC43-3464-4FC0-8998-A8783AE22971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F50AC43-3464-4FC0-8998-A8783AE22971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F50AC43-3464-4FC0-8998-A8783AE22971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F50AC43-3464-4FC0-8998-A8783AE22971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{024A1953-5532-4F14-AE4E-368CB634EEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024A1953-5532-4F14-AE4E-368CB634EEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024A1953-5532-4F14-AE4E-368CB634EEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024A1953-5532-4F14-AE4E-368CB634EEA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
