@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FinanceDashboard.Data.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace FinanceDashboard.Data.SqlServer.DataController
+namespace FinanceDashboard.Data.DataController
 {
     public class CommonDataController<T> where T : class
     {

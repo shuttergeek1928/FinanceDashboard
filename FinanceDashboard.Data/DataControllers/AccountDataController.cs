@@ -1,8 +1,7 @@
 ﻿using FinanceDashboard.Data.SqlServer;
-using FinanceDashboard.Data.SqlServer.DataController;
 using FinanceDashboard.Data.SqlServer.Entities;
 
-namespace FinanceDashboard.Data.SqlServer.DataController
+namespace FinanceDashboard.Data.DataController
 {
     public class AccountDataController : CommonDataController<Account>
     {

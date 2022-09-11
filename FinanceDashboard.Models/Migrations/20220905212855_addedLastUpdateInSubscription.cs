@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -19,7 +18,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                 name: "LastUpdateBy",
                 table: "Subscription",
                 type: "int",
-                nullable: true);            
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

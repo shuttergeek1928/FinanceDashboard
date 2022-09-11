@@ -2,7 +2,7 @@
 
 namespace FinanceDashboard.Data.SqlServer.DataController
 {
-    public class TestAccountDataController 
+    public class TestAccountDataController
     {
         private readonly FinanceDashboardContext _context;
 

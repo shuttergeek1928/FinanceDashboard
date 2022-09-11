@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace FinanceDashboard.ServiceX
+namespace FinanceDashboard.Core
 {
-    public class ApiResponseX
+    public class ApiResponse
     {
         public HttpStatusCode StatusCode { get; set; }
         public bool IsSuccess { get; set; } = true;

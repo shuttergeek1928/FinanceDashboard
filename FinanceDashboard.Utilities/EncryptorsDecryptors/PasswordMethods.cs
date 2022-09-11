@@ -36,12 +36,12 @@ namespace FinanceDashboard.Utilities.EncryptorsDecryptors
 
         public string GetHash(string plainPassword, string salt)
         {
-            byte[] byteArray = Encoding.Unicode.GetBytes(string.Concat(salt,plainPassword));
+            byte[] byteArray = Encoding.Unicode.GetBytes(string.Concat(salt, plainPassword));
 
             SHA256 sha256 = SHA256Managed.Create();
 
             byte[] hashedByte = sha256.ComputeHash(byteArray);
-            
+
             return Convert.ToBase64String(hashedByte);
         }
     }

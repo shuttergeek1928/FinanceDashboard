@@ -21,7 +21,7 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-        
+
         [Required]
         public string Email { get; set; }
 

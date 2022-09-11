@@ -1,18 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinanceDashboard.Data.SqlServer.Entities
+namespace FinanceDashboard.Core.Models.Subscription
 {
-    public class Subscription
+    public class SubscriptionCreateModel
     {
         [Required]
-        [Key]
-        public Guid Id { get; set; }
-
-        [ForeignKey("UserAccountId")]
         public int AccountId { get; set; }
-
-        public Account User { get; set; }
 
         [Required]
         public string SubscriptionName { get; set; }
@@ -37,15 +30,5 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public decimal Amount { get; set; }
 
         public decimal? RenewalAmount { get; set; }
-
-        public DateTime? CanceledOn { get; set; }
-
-        public int? CanceledBy { get; set; }
-
-        public bool IsExpired { get; set; }
-
-        public DateTime? LastUpdate { get; set; }
-
-        public int? LastUpdateBy { get; set; }
     }
 }

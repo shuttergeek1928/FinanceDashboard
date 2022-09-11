@@ -1,18 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using FinanceDashboard.Core.Models.Account;
+using System.ComponentModel.DataAnnotations;
 
-namespace FinanceDashboard.Data.SqlServer.Entities
+namespace FinanceDashboard.Core.Models.Subscription
 {
-    public class Subscription
+    public class SubscriptionListModel
     {
         [Required]
-        [Key]
         public Guid Id { get; set; }
 
-        [ForeignKey("UserAccountId")]
         public int AccountId { get; set; }
 
-        public Account User { get; set; }
+        public AccountSummaryModel User { get; set; }
 
         [Required]
         public string SubscriptionName { get; set; }

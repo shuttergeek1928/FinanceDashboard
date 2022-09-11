@@ -1,5 +1,4 @@
-﻿using FinanceDashboard.Data.SqlServer.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FinanceDashboard.Service.Models.Subscription
 {

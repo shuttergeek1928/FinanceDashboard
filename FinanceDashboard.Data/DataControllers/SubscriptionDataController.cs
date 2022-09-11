@@ -1,7 +1,8 @@
-﻿using FinanceDashboard.Data.SqlServer.Entities;
+﻿using FinanceDashboard.Data.SqlServer;
+using FinanceDashboard.Data.SqlServer.Entities;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace FinanceDashboard.Data.SqlServer.DataController
+namespace FinanceDashboard.Data.DataController
 {
     public class SubscriptionDataController : CommonDataController<Subscription>
     {
@@ -13,10 +14,10 @@ namespace FinanceDashboard.Data.SqlServer.DataController
 
         public async Task<Subscription> UpdateSubscription(Subscription entity)
         {
-           _context.Subscription.Update(entity);
+            _context.Subscription.Update(entity);
 
             await SaveAsync();
-            
+
             return entity;
         }
 

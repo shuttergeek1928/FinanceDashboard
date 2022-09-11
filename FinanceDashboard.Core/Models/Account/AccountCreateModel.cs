@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceDashboard.Service.Models.Account
+namespace FinanceDashboard.Core.Models.Account
 {
-    public class AccountDetailModel
+    public class AccountCreateModel
     {
-        [Required]
-        public int AccountId { get; set; }
-
         [Required]
         public Guid Id { get; set; }
 

@@ -1,8 +1,8 @@
-﻿using FinanceDashboard.Utilities.EncryptorsDecryptors;
-using FinanceDashboard.Data.SqlServer.Entities;
+﻿using FinanceDashboard.Data.SqlServer.Entities;
+using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace FinanceDashboard.Data.SqlServer
 {

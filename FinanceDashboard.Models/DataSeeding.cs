@@ -1,9 +1,4 @@
 ﻿using FinanceDashboard.Data.SqlServer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinanceDashboard.Data.SqlServer
 {
@@ -25,7 +20,7 @@ namespace FinanceDashboard.Data.SqlServer
                     HashingSalt = "@6ZD3aazp-zp",
                     PasswordHashHistory = "rlJuiL2QibBsb6S/cFinFP9BYEYx8bGObdhMJ0k3RIQ=,",
                     MobileNumber = "9827766387",
-                    CreatedOn = new DateTime(2022,01,01)
+                    CreatedOn = new DateTime(2022, 01, 01)
                 };
             }
         }
