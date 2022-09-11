@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Core.Models.Subscription;
+using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer.Entities;
 using Microsoft.AspNetCore.JsonPatch;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FinanceDashboard.Data.SqlServer.Entities;
-using FinanceDashboard.Service.Models.Account;
-using FinanceDashboard.Service.Models.Subscription;
+using FinanceDashboard.Models.Account;
+using FinanceDashboard.Models.Subscription;
 
 namespace FinanceDashboard.Service
 {

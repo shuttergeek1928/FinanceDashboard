@@ -1,7 +1,7 @@
 using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer;
-using FinanceDashboard.Service.EncryptorsDecryptors;
+using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 

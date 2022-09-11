@@ -1,16 +1,11 @@
-﻿using FinanceDashboard.Service.Models.Account;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceDashboard.Service.Models.Subscription
+namespace FinanceDashboard.Models.Subscription
 {
-    public class SubscriptionListModel
+    public class SubscriptionCreateModel
     {
         [Required]
-        public Guid Id { get; set; }
-
         public int AccountId { get; set; }
-
-        public AccountSummaryModel User { get; set; }
 
         [Required]
         public string SubscriptionName { get; set; }
@@ -35,15 +30,5 @@ namespace FinanceDashboard.Service.Models.Subscription
         public decimal Amount { get; set; }
 
         public decimal? RenewalAmount { get; set; }
-
-        public DateTime? CanceledOn { get; set; }
-
-        public int? CanceledBy { get; set; }
-
-        public bool IsExpired { get; set; }
-
-        public DateTime? LastUpdate { get; set; }
-
-        public int? LastUpdateBy { get; set; }
     }
 }

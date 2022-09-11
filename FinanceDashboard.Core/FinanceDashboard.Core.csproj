@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FinanceDashboard.Data\FinanceDashboard.Data.csproj" />
+    <ProjectReference Include="..\FinanceDashboard.Models\FinanceDashboard.Models.csproj" />
   </ItemGroup>
 
 </Project>

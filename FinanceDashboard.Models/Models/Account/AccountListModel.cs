@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceDashboard.Core.Models.Account
+namespace FinanceDashboard.Models.Account
 {
     public class AccountListModel
     {

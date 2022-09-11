@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Core.Models.Account;
-using FinanceDashboard.Core.Models.Subscription;
+using FinanceDashboard.Models.Account;
+using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.SqlServer.Entities;
 
 namespace FinanceDashboard.Core

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceDashboard.Core.Models.Subscription
+namespace FinanceDashboard.Models.Subscription
 {
     public class SubscriptionUpdateModel
     {

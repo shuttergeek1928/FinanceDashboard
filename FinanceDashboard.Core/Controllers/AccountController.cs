@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FinanceDashboard.Core.Models.Account;
+using FinanceDashboard.Models.Account;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer.Entities;
 using System.Net;

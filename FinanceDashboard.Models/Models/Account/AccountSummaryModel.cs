@@ -1,4 +1,4 @@
-﻿namespace FinanceDashboard.Service.Models.Account
+﻿namespace FinanceDashboard.Models.Account
 {
     public class AccountSummaryModel
     {

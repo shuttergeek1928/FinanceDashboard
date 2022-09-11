@@ -1,6 +1,6 @@
 ﻿using FinanceDashboard.Core;
 using FinanceDashboard.Core.Controllers;
-using FinanceDashboard.Core.Models.Subscription;
+using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.DataController;
 using Microsoft.AspNetCore.Mvc;
 
