@@ -54,6 +54,7 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     xmlFilename = xmlFilename.Remove(16, 8);
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    var modules = Assembly.GetExecutingAssembly().GetExportedTypes();
 });
 
 var app = builder.Build();
@@ -64,7 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.InjectStylesheet("/swagger-ui/custom.css");
+        options.InjectStylesheet("FinanceDashboard.Service.swagger-ui.custom.css");
     });
 }
 
