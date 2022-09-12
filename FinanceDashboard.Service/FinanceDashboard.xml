@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FinanceDashboard.Service</name>
+    </assembly>
+    <members>
+        <member name="M:FinanceDashboard.Service.ApiControllers.SubscriptionApiController.GetAllSubscription(System.String)">
+            <summary>
+            Returns all subscription irrespective of account.
+            </summary>
+            <param name="includeChildProperty"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

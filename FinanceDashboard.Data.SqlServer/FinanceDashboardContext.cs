@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace FinanceDashboard.Data.SqlServer
 {
+#pragma warning restore CS1591
     public class FinanceDashboardContext : DbContext
     {
         private readonly IPasswordMethods _passwordMethods;
@@ -64,4 +65,5 @@ namespace FinanceDashboard.Data.SqlServer
             return new FinanceDashboardContext(builder.Options);
         }
     }
+#pragma warning restore CS1591
 }

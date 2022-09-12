@@ -3,12 +3,13 @@ using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 
 builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 {
@@ -40,7 +41,21 @@ builder.Services.AddMvc().AddNewtonsoftJson(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Finance Dashboard API help page."
+    });
+
+    //Using system reflection
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    xmlFilename = xmlFilename.Remove(16, 8);
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    var modules = Assembly.GetExecutingAssembly().GetExportedTypes();
+});
 
 var app = builder.Build();
 
@@ -48,12 +63,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.InjectStylesheet("FinanceDashboard.Service.swagger-ui.custom.css");
+    });
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
