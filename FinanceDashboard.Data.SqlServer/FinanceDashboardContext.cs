@@ -1,5 +1,7 @@
-﻿using FinanceDashboard.Data.SqlServer.Entities;
+﻿using FinanceDashboard.Data.SqlServer.Authorization;
+using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 namespace FinanceDashboard.Data.SqlServer
 {
 #pragma warning restore CS1591
-    public class FinanceDashboardContext : DbContext
+    public class FinanceDashboardContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IPasswordMethods _passwordMethods;
         private readonly string _password;
