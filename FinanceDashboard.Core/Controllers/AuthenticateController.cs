@@ -13,28 +13,28 @@ namespace FinanceDashboard.Core.Controllers
 {
     public class AuthenticateController
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
         public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
-            this.userManager = userManager;
-            this.roleManager = roleManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _configuration = configuration;
         }
 
         public async Task<PreLogonResponse> Login(PreLogonModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByNameAsync(model.Email);
 
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await userManager.GetRolesAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Name, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -65,7 +65,7 @@ namespace FinanceDashboard.Core.Controllers
 
         public async Task<PreLogonResponse> Register(AccountCreateModel model)
         {
-            var userExists = await userManager.FindByNameAsync(model.Email);
+            var userExists = await _userManager.FindByNameAsync(model.Email);
 
             if (userExists != null)
                 return new PreLogonResponse { Status = "Error", Message = "User already exists!" };
@@ -77,7 +77,7 @@ namespace FinanceDashboard.Core.Controllers
                 UserName = model.Email
             };
 
-            var result = await userManager.CreateAsync(user, model.PasswordHash);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
 
             if (!result.Succeeded)
                 return new PreLogonResponse { Status = "Error", Message = "User creation failed! Please check user details and try again." };
@@ -87,7 +87,7 @@ namespace FinanceDashboard.Core.Controllers
 
         public async Task<PreLogonResponse> RegisterAdmin(AccountCreateModel model)
         {
-            var userExists = await userManager.FindByNameAsync(model.Email);
+            var userExists = await _userManager.FindByNameAsync(model.Email);
 
             if (userExists != null)
                 return new PreLogonResponse { Status = "Error", Message = "User already exists!" };
@@ -99,20 +99,20 @@ namespace FinanceDashboard.Core.Controllers
                 UserName = model.Email
             };
 
-            var result = await userManager.CreateAsync(user, model.PasswordHash);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
 
             if (!result.Succeeded)
                 return new PreLogonResponse { Status = "Error", Message = "User creation failed! Please check user details and try again." };
 
-            if (!await roleManager.RoleExistsAsync(Constants.Admin))
-                await roleManager.CreateAsync(new IdentityRole(Constants.Admin));
+            if (!await _roleManager.RoleExistsAsync(Constants.Admin))
+                await _roleManager.CreateAsync(new IdentityRole(Constants.Admin));
 
-            if (!await roleManager.RoleExistsAsync(Constants.User))
-                await roleManager.CreateAsync(new IdentityRole(Constants.User));
+            if (!await _roleManager.RoleExistsAsync(Constants.User))
+                await _roleManager.CreateAsync(new IdentityRole(Constants.User));
 
-            if (await roleManager.RoleExistsAsync(Constants.Admin))
+            if (await _roleManager.RoleExistsAsync(Constants.Admin))
             {
-                await userManager.AddToRoleAsync(user, Constants.Admin);
+                await _roleManager.AddToRoleAsync(user, Constants.Admin);
             }
 
             return new PreLogonResponse { Status = "Success", Message = "User created successfully!" };
