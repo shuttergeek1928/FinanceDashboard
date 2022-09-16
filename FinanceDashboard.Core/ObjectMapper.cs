@@ -2,6 +2,7 @@
 using FinanceDashboard.Models.Account;
 using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.SqlServer.Entities;
+using FinanceDashboard.Models.PreLogon;
 
 namespace FinanceDashboard.Core
 {
@@ -32,6 +33,7 @@ namespace FinanceDashboard.Core
             CreateMap<Account, AccountListModel>().ReverseMap();
             CreateMap<Account, AccountCreateModel>().ReverseMap();
             CreateMap<Account, AccountSummaryModel>().ReverseMap();
+            CreateMap<Account, RegisterAccountModel>().ReverseMap();
             CreateMap<AccountDetailModel, AccountCreateModel>().ReverseMap();
             //CreateMap<VillaUpdateModel, VillaModel>().ForMember(destinationModel => destinationModel.Id, options => options.Ignore());
 

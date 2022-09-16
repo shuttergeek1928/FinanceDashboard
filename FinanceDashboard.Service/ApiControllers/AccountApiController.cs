@@ -1,5 +1,7 @@
 ﻿using FinanceDashboard.Core;
 using FinanceDashboard.Core.Controllers;
+using FinanceDashboard.Models.PreLogon;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceDashboard.Service.ApiControllers
@@ -16,10 +18,32 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         /// <summary>
+        /// Call this api to login
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>JWT token for logged in user</returns>
+        [HttpPost]
+        [Route("logon")]
+        public async Task<ActionResult<ApiResponse>> Logon(AccountLogonModel model)
+        {
+            return Ok(await _ac.LogonAccount(model));
+        }
+        /// <summary>
+        /// Register for new user
+        /// </summary>
+        /// <returns>Newly created user.</returns>
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<ApiResponse>> RegisterAccount(RegisterAccountModel model)
+        {
+            return Ok(await _ac.RegisterAccount(model));
+        }
+
+        /// <summary>
         /// Returns all users currently in the system
         /// </summary>
         /// <returns>List of users</returns>
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<ActionResult<ApiResponse>> GetAllUsers1()
         {
             return Ok(await _ac.GetAllUsers());
