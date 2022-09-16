@@ -1,6 +1,7 @@
 ﻿using FinanceDashboard.Data.SqlServer.Authorization;
 using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 namespace FinanceDashboard.Data.SqlServer
 {
 #pragma warning restore CS1591
-    public class FinanceDashboardContext : IdentityDbContext<ApplicationUser>
+    public class FinanceDashboardContext : IdentityDbContext<ApiUser>
     {
         private readonly IPasswordMethods _passwordMethods;
         private readonly string _password;
@@ -38,6 +39,14 @@ namespace FinanceDashboard.Data.SqlServer
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
+            //builder.Entity<ApiUser>().HasKey(x => new
+            //{
+            //    x.AccountId,
+            //    x.Id
+            //});
+
             builder.Entity<Account>().HasKey(table => new
             {
                 table.AccountId,
@@ -60,7 +69,7 @@ namespace FinanceDashboard.Data.SqlServer
     {
         public FinanceDashboardContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../FinanceDashboard.Models/appsettings.json").Build();
+            IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../FinanceDashboard.Service/appsettings.json").Build();
             var builder = new DbContextOptionsBuilder<FinanceDashboardContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnectionString");
             builder.UseSqlServer(connectionString);

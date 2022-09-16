@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinanceDashboard.Data.SqlServer.Authorization;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinanceDashboard.Data.SqlServer.Entities
@@ -12,7 +13,7 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         [ForeignKey("UserAccountId")]
         public int AccountId { get; set; }
 
-        public Account User { get; set; }
+        public ApiUser User { get; set; }
 
         [Required]
         public string SubscriptionName { get; set; }

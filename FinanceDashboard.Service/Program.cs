@@ -2,6 +2,7 @@ using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer;
 using FinanceDashboard.Data.SqlServer.Authorization;
+using FinanceDashboard.Service;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -41,29 +42,11 @@ builder.Services.AddControllers(option =>
     jsonOption.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<FinanceDashboardContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApiUser, IdentityRole>().AddEntityFrameworkStores<FinanceDashboardContext>().AddDefaultTokenProviders();
 
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-// Adding Jwt Bearer  
-.AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidAudience = builder.Configuration["ApiSetting:JWT:ValidAudience"],
-        ValidIssuer = builder.Configuration["ApiSetting:JWT:ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
-    };
-});
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
 builder.Services.AddMvc().AddNewtonsoftJson(options =>
 {
