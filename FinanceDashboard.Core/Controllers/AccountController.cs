@@ -3,36 +3,48 @@ using FinanceDashboard.Models.Account;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer.Entities;
 using System.Net;
+using System.Threading;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using FinanceDashboard.Models.PreLogon;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using FinanceDashboard.Data.SqlServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using FinanceDashboard.Core.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 
 namespace FinanceDashboard.Core.Controllers
 {
-    public class AccountController
+    public class AccountController : ControllerBase
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AccountDataController _adc;
         private readonly IPasswordMethods _passwordMethods;
         protected readonly ApiResponse _response;
         private IMapper _mapper;
 
-        public AccountController(AccountDataController adc, IPasswordMethods passwordMethods)
+        public AccountController(AccountDataController adc, IPasswordMethods passwordMethods, IHttpContextAccessor httpContextAccessor)
         {
             _adc = adc;
             _response = new();
             _mapper = new ObjectMapper().Mapper;
             _passwordMethods = passwordMethods;
+            _httpContextAccessor = httpContextAccessor;
         }
 
+        [Authorize]
         public async Task<ApiResponse> GetUserByEmail(string email)
         {
+            if (true)
+            {
+                _response.Result = Thread.CurrentPrincipal;
+                return _response;
+            }
+
             try
             {
                 _response.Result = await GetAccountDetailByEmail(email);
@@ -51,9 +63,10 @@ namespace FinanceDashboard.Core.Controllers
             return _response;
         }
 
-        [Authorize]
         public async Task<ApiResponse> GetAllUsers()
         {
+            var user = Thread.CurrentPrincipal;
+
             try
             {
                 IEnumerable<AccountListModel> accounts = _mapper.Map<List<AccountListModel>>(await _adc.GetAllAsync());
@@ -82,7 +95,7 @@ namespace FinanceDashboard.Core.Controllers
 
             if (IsAccountValid)
             {
-                var token = CreateToken(account);
+                var token = await CreateToken(account);
 
                 _response.Result = token;
 
@@ -172,8 +185,17 @@ namespace FinanceDashboard.Core.Controllers
             return account;
         }
 
-        private string CreateToken(AccountDetailModel account)
-        {
+        private async Task<string> CreateToken(AccountDetailModel account)
+        {            
+            if (account.IsLocked ?? false)
+                throw new Exception("Account Locked Exception.");
+
+            if (account.SecondFactorValidated ?? false)
+                throw new Exception("Requires second factor.");
+            
+            if (account.DeletedOn != null)
+                throw new Exception("Account deleted.");
+
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, account.Email),
@@ -192,9 +214,20 @@ namespace FinanceDashboard.Core.Controllers
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds);
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return jwt;
+            var user = new FDPrincipal(account.Name, account.AccountId, account.Email, jwtToken);
+
+            _httpContextAccessor.HttpContext.User = new ClaimsPrincipal(user);
+
+            Thread.CurrentPrincipal = user as FDPrincipal;
+            
+            return jwtToken;
+        }
+
+        private async Task SetCurrentPrincipal(FDPrincipal principal)
+        {
+            Thread.CurrentPrincipal = principal as FDPrincipal;
         }
 
         private async Task<AccountDetailModel> GetAccountDetailByEmail(string email)
@@ -203,3 +236,20 @@ namespace FinanceDashboard.Core.Controllers
         }
     }
 }
+
+//var principalType = Thread.CurrentPrincipal.GetType().Name;
+//// principalType = WindowsPrincipal
+//// Thread.CurrentThread.ManagedThreadId = 11
+
+//await Task.Run(() =>
+//{
+//    // Tried putting await Task.Yield() here but didn't help
+
+//    Thread.CurrentPrincipal = new UserPrincipal(Thread.CurrentPrincipal.Identity);
+//    principalType = Thread.CurrentPrincipal.GetType().Name;
+//    // principalType = UserPrincipal
+//    // Thread.CurrentThread.ManagedThreadId = 10
+//});
+//principalType = Thread.CurrentPrincipal.GetType().Name;
+//// principalType = WindowsPrincipal (WHY??)
+//// Thread.CurrentThread.ManagedThreadId = 10

@@ -43,10 +43,21 @@ namespace FinanceDashboard.Service.ApiControllers
         /// Returns all users currently in the system
         /// </summary>
         /// <returns>List of users</returns>
-        [HttpGet, Authorize]
-        public async Task<ActionResult<ApiResponse>> GetAllUsers1()
+        [HttpGet]
+        public async Task<ActionResult<ApiResponse>> GetAllUsers()
         {
             return Ok(await _ac.GetAllUsers());
+        }
+
+        /// <summary>
+        /// Search user by email
+        /// </summary>
+        /// <returns>Details of sers</returns>
+        [HttpGet, Authorize]
+        [Route("{email}")]
+        public async Task<ActionResult<ApiResponse>> GetUserByEmail(string email)
+        {
+            return Ok(await _ac.GetUserByEmail(email));
         }
 
         /// <summary>

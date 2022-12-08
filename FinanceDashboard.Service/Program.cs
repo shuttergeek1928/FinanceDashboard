@@ -27,6 +27,8 @@ builder.Services.AddScoped<AccountDataController>();
 builder.Services.AddScoped<AccountController>();
 builder.Services.AddScoped<SubscriptionController>();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 //builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 builder.Services.AddControllers(option =>

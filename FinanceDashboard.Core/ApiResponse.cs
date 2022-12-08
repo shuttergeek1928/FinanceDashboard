@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Principal;
 
 namespace FinanceDashboard.Core
 {
@@ -8,5 +9,7 @@ namespace FinanceDashboard.Core
         public bool IsSuccess { get; set; } = true;
         public List<string>? Errors { get; set; }
         public object? Result { get; set; }
+
+        public IIdentity Identity { get; set; }
     }
 }

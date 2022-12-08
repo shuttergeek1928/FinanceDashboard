@@ -3,11 +3,12 @@ using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.DataController;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinanceDashboard.Service.ApiControllers
 {
     [Route("api/subscription/")]
-    [ApiController]
+    [ApiController, Authorize]
     public class SubscriptionApiController : ControllerBase
     {
         private readonly SubscriptionController _sc;
