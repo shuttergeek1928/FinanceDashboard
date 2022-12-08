@@ -221,7 +221,8 @@ namespace FinanceDashboard.Core.Controllers
             _httpContextAccessor.HttpContext.User = new ClaimsPrincipal(user);
 
             Thread.CurrentPrincipal = user as FDPrincipal;
-            
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.SetThreadPrincipal(Thread.CurrentPrincipal);
             return jwtToken;
         }
 
