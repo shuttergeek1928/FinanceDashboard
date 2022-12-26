@@ -3,19 +3,16 @@ using FinanceDashboard.Models.Account;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer.Entities;
 using System.Net;
-using System.Threading;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using FinanceDashboard.Models.PreLogon;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using FinanceDashboard.Core.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
+
 
 namespace FinanceDashboard.Core.Controllers
 {
@@ -36,15 +33,8 @@ namespace FinanceDashboard.Core.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [Authorize]
         public async Task<ApiResponse> GetUserByEmail(string email)
         {
-            if (true)
-            {
-                _response.Result = Thread.CurrentPrincipal;
-                return _response;
-            }
-
             try
             {
                 _response.Result = await GetAccountDetailByEmail(email);
@@ -211,24 +201,22 @@ namespace FinanceDashboard.Core.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: creds);
 
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             var user = new FDPrincipal(account.Name, account.AccountId, account.Email, jwtToken);
 
-            _httpContextAccessor.HttpContext.User = new ClaimsPrincipal(user);
-
-            Thread.CurrentPrincipal = user as FDPrincipal;
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            currentDomain.SetThreadPrincipal(Thread.CurrentPrincipal);
             return jwtToken;
         }
 
-        private async Task SetCurrentPrincipal(FDPrincipal principal)
+        private async Task<ApiResponse> SignOut()
         {
-            Thread.CurrentPrincipal = principal as FDPrincipal;
+            _response.IsSuccess = true;
+            _response.Result = "Signed out successfully!";
+
+            return _response;
         }
 
         private async Task<AccountDetailModel> GetAccountDetailByEmail(string email)
@@ -237,20 +225,3 @@ namespace FinanceDashboard.Core.Controllers
         }
     }
 }
-
-//var principalType = Thread.CurrentPrincipal.GetType().Name;
-//// principalType = WindowsPrincipal
-//// Thread.CurrentThread.ManagedThreadId = 11
-
-//await Task.Run(() =>
-//{
-//    // Tried putting await Task.Yield() here but didn't help
-
-//    Thread.CurrentPrincipal = new UserPrincipal(Thread.CurrentPrincipal.Identity);
-//    principalType = Thread.CurrentPrincipal.GetType().Name;
-//    // principalType = UserPrincipal
-//    // Thread.CurrentThread.ManagedThreadId = 10
-//});
-//principalType = Thread.CurrentPrincipal.GetType().Name;
-//// principalType = WindowsPrincipal (WHY??)
-//// Thread.CurrentThread.ManagedThreadId = 10

@@ -4,6 +4,8 @@ using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer.Entities;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Net;
+using Microsoft.AspNetCore.Http;
+using FinanceDashboard.Core.Security;
 
 namespace FinanceDashboard.Core.Controllers
 {
@@ -12,22 +14,34 @@ namespace FinanceDashboard.Core.Controllers
         private readonly IMapper _mapper;
         protected readonly ApiResponse _response;
         private readonly SubscriptionDataController _sdc;
-        private readonly AccountDataController _adc;
+        public AccountDataController _adc;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc)
+
+        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor)
         {
             _adc = adc;
             _mapper = new ObjectMapper().Mapper;
             _response = new();
             _sdc = sdc;
+            _httpContextAccessor = httpContextAccessor;
         }
+
         /// <summary>
         /// Get all subscriptions for all users
-        /// </summary>
+        /// </summary>nn
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
+        /// 
         public async Task<ApiResponse> GetAllSubscription(string? includeChildProperty = null)
         {
+            //var jwtToken = _httpContextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
+            //var req = _httpContextAccessor.HttpContext.User;
+            //var role = req.FindFirst(x => x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            //var exp = long.Parse(req.FindFirst(x => x.Type == "exp").Value);
+
+            var user = Thread.CurrentPrincipal;
+
             try
             {
                 IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sdc.GetAllAsync(includeChildProperties: includeChildProperty));
@@ -50,6 +64,8 @@ namespace FinanceDashboard.Core.Controllers
 
         public async Task<ApiResponse> GetAllSubscriptionByAccountId(int? accountId, string? includeChildProperty = null)
         {
+            var user = Thread.CurrentPrincipal;
+
             try
             {
                 IEnumerable<SubscriptionListModel> subscriptions = _mapper.Map<List<SubscriptionListModel>>(await _sdc.GetAllAsync(x => x.User.AccountId == accountId, includeChildProperties: includeChildProperty));

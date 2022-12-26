@@ -3,12 +3,13 @@ using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.DataController;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using FinanceDashboard.Core.Security;
+using AuthorizeAttribute = FinanceDashboard.Core.Security.AuthorizeAttribute;
 
 namespace FinanceDashboard.Service.ApiControllers
 {
     [Route("api/subscription/")]
-    [ApiController, Authorize]
+    [ApiController]
     public class SubscriptionApiController : ControllerBase
     {
         private readonly SubscriptionController _sc;
@@ -26,6 +27,7 @@ namespace FinanceDashboard.Service.ApiControllers
         /// <returns></returns>
         [HttpGet]
         [Route("all")]
+        [Authorize]
         public async Task<ActionResult<ApiResponse>> GetAllSubscription(string? includeChildProperty = null)
         {
             return Ok(await _sc.GetAllSubscription(includeChildProperty));
@@ -39,6 +41,7 @@ namespace FinanceDashboard.Service.ApiControllers
         /// <returns></returns>
         [HttpGet]
         [Route("all/accountId/{accountId:int}")]
+        [Authorize]
         public async Task<ActionResult<ApiResponse>> GetAllSubscriptionByAccountId(int? accountId, string? includeChildProperty = null)
         {
             return Ok(await _sc.GetAllSubscriptionByAccountId(accountId, includeChildProperty));

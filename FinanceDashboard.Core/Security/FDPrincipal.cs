@@ -10,8 +10,14 @@ namespace FinanceDashboard.Core.Security
         {
             _identity = new FDIdentity("FDAuth", true, name, accountId, email, sessionToken);
         }
-        public IIdentity? Identity 
+
+        public IIdentity Identity 
         { 
+            get { return _identity; }
+        }
+
+        public FDIdentity FDIdentity
+        {
             get { return _identity; }
         }
 

@@ -1,8 +1,9 @@
 ﻿using FinanceDashboard.Core;
 using FinanceDashboard.Core.Controllers;
+using FinanceDashboard.Core.Security;
 using FinanceDashboard.Models.PreLogon;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AuthorizeAttribute = FinanceDashboard.Core.Security.AuthorizeAttribute;
 
 namespace FinanceDashboard.Service.ApiControllers
 {
@@ -28,6 +29,19 @@ namespace FinanceDashboard.Service.ApiControllers
         {
             return Ok(await _ac.LogonAccount(model));
         }
+
+        /// <summary>
+        /// Call this api to logout
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>null</returns>
+        [HttpPost]
+        [Route("logout")]
+        public async Task<ActionResult<ApiResponse>> SignOut()
+        {
+            return Ok( _ac.SignOut());
+        }
+
         /// <summary>
         /// Register for new user
         /// </summary>
@@ -43,7 +57,7 @@ namespace FinanceDashboard.Service.ApiControllers
         /// Returns all users currently in the system
         /// </summary>
         /// <returns>List of users</returns>
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<ActionResult<ApiResponse>> GetAllUsers()
         {
             return Ok(await _ac.GetAllUsers());
