@@ -13,13 +13,21 @@ namespace FinanceDashboard.Core.Security
     {
         private readonly JwtSecurityTokenHandler _jwtHandler = new JwtSecurityTokenHandler();
         private AccountDataController _adc;
+        private bool AllowAnonymous { get; set; }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             _adc = context.HttpContext.RequestServices.GetService<AccountDataController>();
             string bearerToken = context.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization").Value;
+            AllowAnonymous = context.ActionDescriptor.EndpointMetadata
+                .Any(x => x.GetType() == typeof(Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute));
+            
             if (bearerToken == null)
+            {
                 throw new Exception("UnAuthorized");
+            }
+            else if (AllowAnonymous) { }
+
 
             bearerToken = bearerToken.Substring(7);
             var payload = GetPayLoadData(bearerToken);

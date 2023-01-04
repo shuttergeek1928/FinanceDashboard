@@ -2,11 +2,13 @@
 using FinanceDashboard.Data.SqlServer.Entities;
 using Microsoft.AspNetCore.JsonPatch;
 
+
 namespace FinanceDashboard.Data.DataController
 {
     public class SubscriptionDataController : CommonDataController<Subscription>
     {
         private readonly FinanceDashboardContext _context;
+
         public SubscriptionDataController(FinanceDashboardContext context) : base(context)
         {
             _context = context;

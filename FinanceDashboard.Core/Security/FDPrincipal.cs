@@ -2,7 +2,7 @@
 
 namespace FinanceDashboard.Core.Security
 {
-    internal class FDPrincipal : IPrincipal
+    public  class FDPrincipal : IPrincipal
     {
         readonly FDIdentity _identity;
 

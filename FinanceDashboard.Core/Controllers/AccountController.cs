@@ -12,11 +12,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using FinanceDashboard.Core.Security;
-
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace FinanceDashboard.Core.Controllers
 {
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AccountDataController _adc;
@@ -53,10 +53,28 @@ namespace FinanceDashboard.Core.Controllers
             return _response;
         }
 
+        public async Task<ApiResponse> GetUserByAccountId(int id)
+        {
+            try
+            {
+                _response.Result = await GetAccountDetailsByAccountId(id);
+
+                _response.StatusCode = HttpStatusCode.OK;
+
+                return _response;
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+
+                _response.Errors = new List<string>() { e.ToString() };
+            }
+
+            return _response;
+        }
+
         public async Task<ApiResponse> GetAllUsers()
         {
-            var user = Thread.CurrentPrincipal;
-
             try
             {
                 IEnumerable<AccountListModel> accounts = _mapper.Map<List<AccountListModel>>(await _adc.GetAllAsync());
@@ -96,6 +114,7 @@ namespace FinanceDashboard.Core.Controllers
 
             return _response;
         }
+
         public async Task<ApiResponse> RegisterAccount(RegisterAccountModel model)
         {
             Account account = await MapModelToAccount(model);
@@ -222,6 +241,11 @@ namespace FinanceDashboard.Core.Controllers
         private async Task<AccountDetailModel> GetAccountDetailByEmail(string email)
         {
             return _mapper.Map<AccountDetailModel>(await _adc.GetAsync(x => x.Email == email));
+        }
+
+        private async Task<AccountDetailModel> GetAccountDetailsByAccountId(int id)
+        {
+            return _mapper.Map<AccountDetailModel>(await _adc.GetAsync(x => x.AccountId == User.FDIdentity.AccountId));
         }
     }
 }

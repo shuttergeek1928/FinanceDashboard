@@ -3,12 +3,11 @@ using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.DataController;
 using Microsoft.AspNetCore.Mvc;
-using FinanceDashboard.Core.Security;
 using AuthorizeAttribute = FinanceDashboard.Core.Security.AuthorizeAttribute;
 
 namespace FinanceDashboard.Service.ApiControllers
 {
-    [Route("api/subscription/")]
+    [Route("api/subscription/"), Authorize]
     [ApiController]
     public class SubscriptionApiController : ControllerBase
     {
@@ -21,13 +20,12 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         /// <summary>
-        /// Returns all subscription irrespective of account.
+        /// Returns all subscription for current logged in user.
         /// </summary>
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("all")]
-        [Authorize]
         public async Task<ActionResult<ApiResponse>> GetAllSubscription(string? includeChildProperty = null)
         {
             return Ok(await _sc.GetAllSubscription(includeChildProperty));
@@ -40,9 +38,8 @@ namespace FinanceDashboard.Service.ApiControllers
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("all/accountId/{accountId:int}")]
-        [Authorize]
-        public async Task<ActionResult<ApiResponse>> GetAllSubscriptionByAccountId(int? accountId, string? includeChildProperty = null)
+        [Route("all/accountId")]
+        public async Task<ActionResult<ApiResponse>> GetAllSubscriptionByAccountId(int? accountId = null, string? includeChildProperty = null)
         {
             return Ok(await _sc.GetAllSubscriptionByAccountId(accountId, includeChildProperty));
         }
@@ -98,17 +95,40 @@ namespace FinanceDashboard.Service.ApiControllers
         }
 
         /// <summary>
+        /// Get the total subscription amount for an current user
+        /// </summary>
+        /// <returns>Total amount of subscriptions for current logged in user.</returns>
+        [HttpGet]
+        [Route("totalSubscriptionValue")]
+        public async Task<ActionResult<ApiResponse>> GetTotalAmountOfSubscription()
+        {
+            return Ok(await _sc.GetTotalAmount());
+        }
+
+        /// <summary>
         /// Get the total subscription amount for an account
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("totalSubscriptionValue/byAccountId/{accountId:int}")]
+        [Route("totalSubscriptionValue/accountId/{accountId:int}")]
         public async Task<ActionResult<ApiResponse>> GetTotalAmount(int? accountId)
         {
             return Ok(await _sc.GetTotalAmount(accountId));
         }
 
+        /// <summary>
+        /// Get all active or expired subscription for current user
+        /// </summary>
+        /// <param name="isExpired"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("allActiveOrExpiredSubscriptions")]
+        public async Task<ActionResult<ApiResponse>> GetAllActiveOrExpiredSubscriptions(bool? isExpired = false)
+        {
+            return Ok(await _sc.GetActiveOrExpiredSubscription(isExpired));
+        }
+        
         /// <summary>
         /// Get all active or expired subscription on an account
         /// </summary>
@@ -116,8 +136,8 @@ namespace FinanceDashboard.Service.ApiControllers
         /// <param name="isExpired"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("allActiveOrExpiredSubscriptions/byAccountId")]
-        public async Task<ActionResult<ApiResponse>> GetTotalAmount(int accountId, bool? isExpired = false)
+        [Route("allActiveOrExpiredSubscriptions/accountId")]
+        public async Task<ActionResult<ApiResponse>> GetAllActiveOrExpiredSubscriptions(int accountId, bool? isExpired = false)
         {
             return Ok(await _sc.GetActiveOrExpiredSubscription(accountId, isExpired));
         }

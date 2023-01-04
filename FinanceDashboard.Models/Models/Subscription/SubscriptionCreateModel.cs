@@ -5,9 +5,6 @@ namespace FinanceDashboard.Models.Subscription
     public class SubscriptionCreateModel
     {
         [Required]
-        public int AccountId { get; set; }
-
-        [Required]
         public string SubscriptionName { get; set; }
 
         public string? SubscribedOnEmail { get; set; }

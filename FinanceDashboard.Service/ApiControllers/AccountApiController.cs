@@ -2,6 +2,7 @@
 using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Core.Security;
 using FinanceDashboard.Models.PreLogon;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AuthorizeAttribute = FinanceDashboard.Core.Security.AuthorizeAttribute;
 
@@ -35,12 +36,12 @@ namespace FinanceDashboard.Service.ApiControllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>null</returns>
-        [HttpPost]
-        [Route("logout")]
-        public async Task<ActionResult<ApiResponse>> SignOut()
-        {
-            return Ok( _ac.SignOut());
-        }
+        //[HttpPost]
+        //[Route("logout")]
+        //public async Task<ActionResult<ApiResponse>> SignOut()
+        //{
+        //    return Ok( _ac.SignOut());
+        //}
 
         /// <summary>
         /// Register for new user
@@ -57,7 +58,9 @@ namespace FinanceDashboard.Service.ApiControllers
         /// Returns all users currently in the system
         /// </summary>
         /// <returns>List of users</returns>
-        [HttpGet, Authorize]
+        [HttpGet]
+        [Authorize]
+        [Route("all")]
         public async Task<ActionResult<ApiResponse>> GetAllUsers()
         {
             return Ok(await _ac.GetAllUsers());
@@ -67,11 +70,23 @@ namespace FinanceDashboard.Service.ApiControllers
         /// Search user by email
         /// </summary>
         /// <returns>Details of sers</returns>
-        [HttpGet, Authorize]
+        [HttpGet]
         [Route("{email}")]
+        [Authorize]
         public async Task<ActionResult<ApiResponse>> GetUserByEmail(string email)
         {
             return Ok(await _ac.GetUserByEmail(email));
+        }
+
+        /// <summary>
+        /// Search user by account id
+        /// </summary>
+        /// <returns>Details of account</returns>
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse>> GetUserByAccountId(int id)
+        {
+            return Ok(await _ac.GetUserByAccountId(id));
         }
 
         /// <summary>
