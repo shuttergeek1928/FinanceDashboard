@@ -58,7 +58,7 @@ namespace FinanceDashboard.Data.SqlServer
     {
         public FinanceDashboardContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../FinanceDashboard.Models/appsettings.json").Build();
+            IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../FinanceDashboard.Service/appsettings.json").Build();
             var builder = new DbContextOptionsBuilder<FinanceDashboardContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnectionString");
             builder.UseSqlServer(connectionString);

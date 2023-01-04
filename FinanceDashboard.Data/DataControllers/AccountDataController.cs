@@ -29,6 +29,11 @@ namespace FinanceDashboard.Data.DataController
             return entity;
         }
 
+        public Account GetAccountByEmail(string email)
+        {
+            return _context.Account.FirstOrDefault(x => x.Email == email);
+        }
+
         public async Task SaveAsync() => await _context.SaveChangesAsync();
     }
 }

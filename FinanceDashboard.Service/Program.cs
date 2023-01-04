@@ -2,9 +2,14 @@ using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Data.DataController;
 using FinanceDashboard.Data.SqlServer;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +27,8 @@ builder.Services.AddScoped<SubscriptionDataController>();
 builder.Services.AddScoped<AccountDataController>();
 builder.Services.AddScoped<AccountController>();
 builder.Services.AddScoped<SubscriptionController>();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //builder.Services.AddAutoMapper(typeof(MappingConfig));
 
@@ -44,6 +51,15 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authroization header using the bearer sceme (\"bearer {token})\")",
+        In = ParameterLocation.Header,
+        Name = "Authroization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
@@ -55,6 +71,17 @@ builder.Services.AddSwaggerGen(options =>
     xmlFilename = xmlFilename.Remove(16, 8);
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     var modules = Assembly.GetExecutingAssembly().GetExportedTypes();
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("ApiSettings:SecretJWTKey").Value)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
 });
 
 var app = builder.Build();
@@ -71,6 +98,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStaticFiles();
