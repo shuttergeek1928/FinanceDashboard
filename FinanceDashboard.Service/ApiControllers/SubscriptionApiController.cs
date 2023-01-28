@@ -12,7 +12,6 @@ namespace FinanceDashboard.Service.ApiControllers
     public class SubscriptionApiController : ControllerBase
     {
         private readonly SubscriptionController _sc;
-        private readonly AccountDataController _adc;
 
         public SubscriptionApiController(SubscriptionController sc)
         {

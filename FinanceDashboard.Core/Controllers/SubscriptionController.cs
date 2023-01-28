@@ -16,13 +16,15 @@ namespace FinanceDashboard.Core.Controllers
         private readonly SubscriptionDataController _sdc;
         public AccountDataController _adc;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IncomeController _ic;
 
-        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor)
+        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor, IncomeController ic)
         {
             _adc = adc;
             _mapper = new ObjectMapper().Mapper;
             _response = new();
             _sdc = sdc;
+            _ic = ic;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -31,7 +33,7 @@ namespace FinanceDashboard.Core.Controllers
         /// </summary>nn
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
-        /// 
+        ///
         public async Task<ApiResponse> GetAllSubscription(string? includeChildProperty = null)
         {
             try
@@ -335,6 +337,7 @@ namespace FinanceDashboard.Core.Controllers
         private async Task<bool> CheckLatestSubscriptionAmount(decimal amt)
         {
             var totalAmount = await CalculateTotalAmount(User.FDIdentity.AccountId);
+            var incomeBalance = await _ic.GetIncomesByAccountId(User.FDIdentity.AccountId);
 
             return (decimal.Parse(totalAmount.Result.ToString()) + amt) <= 3000.0M;
         }

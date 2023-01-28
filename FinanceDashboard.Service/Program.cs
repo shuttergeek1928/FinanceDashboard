@@ -1,5 +1,6 @@
 using FinanceDashboard.Core.Controllers;
 using FinanceDashboard.Data.DataController;
+using FinanceDashboard.Data.DataControllers;
 using FinanceDashboard.Data.SqlServer;
 using FinanceDashboard.Utilities.EncryptorsDecryptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,9 +24,12 @@ builder.Services.AddDbContext<FinanceDashboardContext>(options =>
 
 builder.Services.AddScoped<IPasswordMethods, PasswordMethods>();
 builder.Services.AddScoped<SubscriptionDataController>();
+builder.Services.AddScoped<SubscriptionController>();
 builder.Services.AddScoped<AccountDataController>();
 builder.Services.AddScoped<AccountController>();
-builder.Services.AddScoped<SubscriptionController>();
+builder.Services.AddScoped<IncomeDataContoller>();
+builder.Services.AddScoped<IncomeController>();
+
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
