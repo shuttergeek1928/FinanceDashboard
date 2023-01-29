@@ -34,6 +34,7 @@ namespace FinanceDashboard.Data.SqlServer
         public DbSet<Account> Account { get; set; }
         public DbSet<Subscription> Subscription { get; set; }
         public DbSet<Income> Income { get; set; }
+        public DbSet<SegmentLimits> SegmentLimits { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -56,6 +57,11 @@ namespace FinanceDashboard.Data.SqlServer
             builder.Entity<Income>(table =>
             {
                 table.HasOne(x => x.User).WithMany(y => y.Income).HasPrincipalKey(z => z.AccountId).OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<SegmentLimits>(table =>
+            {
+                table.HasOne(x => x.User).WithMany(y => y.SegmentLimits).HasPrincipalKey(z => z.AccountId).OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

@@ -11,7 +11,7 @@ namespace FinanceDashboard.Data.SqlServer
                 return new Account()
                 {
                     AccountId = 1,
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("53ab364d-587f-4d40-957a-e0b88636b7ce"),
                     Name = "Atishay Vishwakarma",
                     FirstName = "Atishay",
                     LastName = "Vishwakarma",
@@ -30,7 +30,7 @@ namespace FinanceDashboard.Data.SqlServer
             {
                 return new Subscription()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("2f5bd117-debc-4109-be28-b2a7cee51025"),
                     AccountId = 1,
                     SubscriptionName = "Netflix",
                     SubscribedOnEmail = "atishay1928@outlook.com",
