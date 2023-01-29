@@ -24,7 +24,7 @@ namespace FinanceDashboard.Service.ApiControllers
         /// <param name="limit">Use this limit to restrict number of record returned</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<ApiResponse>> GetIncomes(int? limit = 1000, string? includeChildProperty = null)
+        public async Task<ActionResult<List<IncomeListModel>>> GetIncomes(int? limit = 1000, string? includeChildProperty = null)
         {
             return Ok(await _ic.GetIncomeDetails(limit, includeChildProperty));
         }
@@ -51,6 +51,13 @@ namespace FinanceDashboard.Service.ApiControllers
         public async Task<ActionResult<ApiResponse>> CreateIncome(IncomeCreateModel model)
         {
             return Ok(await _ic.CreateIncome(model));
+        }
+
+        [HttpGet]
+        [Route("getBalance")]
+        public async Task<ActionResult> GetBalacne()
+        {
+            return Ok(await _ic.GetBalance());
         }
 
         /// <summary>

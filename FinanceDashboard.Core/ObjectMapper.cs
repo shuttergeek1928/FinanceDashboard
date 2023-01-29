@@ -46,6 +46,8 @@ namespace FinanceDashboard.Core
             //Income Mappers
             CreateMap<Income, IncomeCreateModel>().ReverseMap();
             CreateMap<Income, IncomeListModel>().ReverseMap();
+            CreateMap<Income, IncomeDetailModel>().ReverseMap();
+            CreateMap<IncomeDetailModel, IncomeListModel>().ReverseMap();
         }
     }
 }

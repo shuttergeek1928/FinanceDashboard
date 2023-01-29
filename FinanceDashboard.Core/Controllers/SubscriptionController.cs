@@ -336,10 +336,18 @@ namespace FinanceDashboard.Core.Controllers
 
         private async Task<bool> CheckLatestSubscriptionAmount(decimal amt)
         {
+            decimal limit = 3000.00M;
             var totalAmount = await CalculateTotalAmount(User.FDIdentity.AccountId);
-            var incomeBalance = await _ic.GetIncomesByAccountId(User.FDIdentity.AccountId);
+            var incomeBalance = await _ic.GetBalance();
 
-            return (decimal.Parse(totalAmount.Result.ToString()) + amt) <= 3000.0M;
+            decimal newSubscriptionTotal = decimal.Parse(totalAmount.Result.ToString()) + amt;
+
+            if (newSubscriptionTotal > limit || newSubscriptionTotal > incomeBalance)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

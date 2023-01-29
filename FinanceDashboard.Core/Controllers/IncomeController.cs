@@ -6,6 +6,7 @@ using FinanceDashboard.Core.Security;
 using FinanceDashboard.Data.DataControllers;
 using FinanceDashboard.Models.Models.Income;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace FinanceDashboard.Core.Controllers
 {
@@ -57,8 +58,9 @@ namespace FinanceDashboard.Core.Controllers
         /// <param name="limit"></param>
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
-        public async Task<ApiResponse> GetIncomesByAccountId(int? accountId, int? limit = 1000, string? includeChildProperty = null)
+        public async Task<CustomModelApiResponse<List<IncomeListModel>>> GetIncomesByAccountId(int? accountId, int? limit = 1000, string? includeChildProperty = null)
         {
+            CustomModelApiResponse<List<IncomeListModel>> _response = new();
 
             if (accountId is null)
                 accountId = User.FDIdentity.AccountId;
@@ -80,7 +82,7 @@ namespace FinanceDashboard.Core.Controllers
 
             return _response;
         }
-
+        
         /// <summary>
         /// Create new income for logged in user
         /// </summary>
@@ -109,11 +111,15 @@ namespace FinanceDashboard.Core.Controllers
             return _response;
         }
 
-        public async Task<ApiResponse> GetBalance(int accountId)
+        public async Task<decimal> GetBalance()
         {
-            var allIncomes = GetIncomesByAccountId(accountId);
-            //Income incomes = JsonSerializer.Deserialize<IList<Income>>(allIncomes.Result);
-            return _response;
+            var allIncomes = await GetIncomesByAccountId(User.FDIdentity.AccountId);
+
+            if (allIncomes.Result == null)
+                throw new Exception("No income found");
+
+            IncomeDetailModel income = _mapper.Map<IncomeDetailModel>(allIncomes.Result.OrderByDescending(x => x.CredtiDate).FirstOrDefault());
+            return income.IncomeBalance;
         }
 
         /// <summary>
