@@ -29,6 +29,9 @@ builder.Services.AddScoped<AccountDataController>();
 builder.Services.AddScoped<AccountController>();
 builder.Services.AddScoped<IncomeDataContoller>();
 builder.Services.AddScoped<IncomeController>();
+builder.Services.AddScoped<SeggmentLimitsDataContorller>();
+builder.Services.AddScoped<SegmentLimitsController>();
+
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

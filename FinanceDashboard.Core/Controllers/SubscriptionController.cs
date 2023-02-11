@@ -17,14 +17,16 @@ namespace FinanceDashboard.Core.Controllers
         public AccountDataController _adc;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IncomeController _ic;
+        private readonly SegmentLimitsController _sldc;
 
-        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor, IncomeController ic)
+        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor, IncomeController ic, SegmentLimitsController sldc)
         {
             _adc = adc;
             _mapper = new ObjectMapper().Mapper;
             _response = new();
             _sdc = sdc;
             _ic = ic;
+            _sldc = sldc;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -336,13 +338,13 @@ namespace FinanceDashboard.Core.Controllers
 
         private async Task<bool> CheckLatestSubscriptionAmount(decimal amt)
         {
-            decimal limit = 3000.00M;
             var totalAmount = await CalculateTotalAmount(User.FDIdentity.AccountId);
             var incomeBalance = await _ic.GetBalance();
+            var limit = await _sldc.GetSegmnetLimitDetailsByAccountId(User.FDIdentity.AccountId);
 
             decimal newSubscriptionTotal = decimal.Parse(totalAmount.Result.ToString()) + amt;
 
-            if (newSubscriptionTotal > limit || newSubscriptionTotal > incomeBalance)
+            if (newSubscriptionTotal > limit.Result.FirstOrDefault().SubscriptionLimit || newSubscriptionTotal > incomeBalance)
             {
                 return false;
             }

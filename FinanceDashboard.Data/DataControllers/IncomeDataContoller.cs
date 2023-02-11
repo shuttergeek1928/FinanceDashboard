@@ -23,7 +23,7 @@ namespace FinanceDashboard.Data.DataControllers
             return entity;
         }
 
-        public async Task<Income> PatchSubscription(JsonPatchDocument<Income> sub, Guid id)
+        public async Task<Income> PatchIncome(JsonPatchDocument<Income> sub, Guid id)
         {
             var income = await _context.Income.FindAsync(id);
 

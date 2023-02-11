@@ -4,27 +4,23 @@ using FinanceDashboard.Data.SqlServer.Entities;
 using System.Net;
 using FinanceDashboard.Core.Security;
 using FinanceDashboard.Data.DataControllers;
-using FinanceDashboard.Models.Models.Income;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.JsonPatch;
+using FinanceDashboard.Models.Models.SegmentLimits;
 
 namespace FinanceDashboard.Core.Controllers
 {
-    public class IncomeController : BaseController
+    public class SegmentLimitsController : BaseController
     {
         private readonly IMapper _mapper;
         protected readonly ApiResponse _response;
-        private readonly IncomeDataContoller _idc;
+        private readonly SeggmentLimitsDataContorller _sdc;
         public AccountDataController _adc;
 
-        public IncomeController(AccountDataController adc, IncomeDataContoller idc)
+        public SegmentLimitsController(AccountDataController adc, SeggmentLimitsDataContorller sdc)
         {
             _adc = adc;
             _mapper = new ObjectMapper().Mapper;
             _response = new();
-            _idc = idc;
+            _sdc = sdc;
         }
 
         /// <summary>
@@ -33,11 +29,11 @@ namespace FinanceDashboard.Core.Controllers
         /// <param name="includeChildProperty"></param>
         /// <param name="limit">Use this to limit your output, by default it is set to 1000</param>
         /// <returns></returns>
-        public async Task<ApiResponse> GetIncomeDetails(int? limit = 1000, string? includeChildProperty = null)
+        public async Task<ApiResponse> GetSegmnetLimitDetails(int? limit = 1000, string? includeChildProperty = null)
         {
             try
             {
-                _response.Result = _mapper.Map<List<IncomeListModel>>(await _idc.GetAllAsync(includeChildProperties: includeChildProperty));
+                _response.Result = _mapper.Map<List<SegmentLimitsListModel>>(await _sdc.GetAllAsync(includeChildProperties: includeChildProperty));
 
                 _response.StatusCode = HttpStatusCode.OK;
 
@@ -60,16 +56,16 @@ namespace FinanceDashboard.Core.Controllers
         /// <param name="limit"></param>
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
-        public async Task<CustomModelApiResponse<List<IncomeListModel>>> GetIncomesByAccountId(int? accountId, int? limit = 1000, string? includeChildProperty = null)
+        public async Task<CustomModelApiResponse<List<SegmentLimitsListModel>>> GetSegmnetLimitDetailsByAccountId(int? accountId, int? limit = 1000, string? includeChildProperty = null)
         {
-            CustomModelApiResponse<List<IncomeListModel>> _response = new();
+            CustomModelApiResponse<List<SegmentLimitsListModel>> _response = new();
 
             if (accountId is null)
                 accountId = User.FDIdentity.AccountId;
 
             try
             {
-                _response.Result = _mapper.Map<List<IncomeListModel>>(await _idc.GetAllAsync(x => x.AccountId == accountId, includeChildProperties: includeChildProperty));
+                _response.Result = _mapper.Map<List<SegmentLimitsListModel>>(await _sdc.GetAllAsync(x => x.AccountId == accountId, includeChildProperties: includeChildProperty));
 
                 _response.StatusCode = HttpStatusCode.OK;
 
@@ -90,14 +86,14 @@ namespace FinanceDashboard.Core.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ApiResponse> CreateIncome(IncomeCreateModel model)
+        public async Task<ApiResponse> CreateLimits(SegmentLimitsCreateModel model)
         {
-            Income newIncome = _mapper.Map<Income>(model);
-            newIncome.AccountId = User.FDIdentity.AccountId;
+            SegmentLimits newLimits = _mapper.Map<SegmentLimits>(model);
+            newLimits.AccountId = User.FDIdentity.AccountId;
 
             try
             {
-                _response.Result = await _idc.CreateAsync(newIncome);
+                _response.Result = await _sdc.CreateAsync(newLimits);
 
                 _response.StatusCode = HttpStatusCode.OK;
 
@@ -113,50 +109,24 @@ namespace FinanceDashboard.Core.Controllers
             return _response;
         }
 
-        public async Task<ApiResponse> UpdateIncome(IncomeUpdateModel model, Guid id)
-        {
-            JsonPatchDocument<Income> patchModel = new JsonPatchDocument<Income>();
-
-            patchModel.Replace(a => a.Amount, model.Amount);
-            patchModel.Replace(a => a.CredtiDate, model.CredtiDate);
-            patchModel.Replace(a => a.CreditCycle, model.CreditCycle);
-
-            _response.Result = await _idc.PatchIncome(patchModel, id);
-            return _response;
-        }
-        public async Task<decimal> GetBalance()
-        {
-            var allIncomes = await GetIncomesByAccountId(User.FDIdentity.AccountId);
-
-            if (allIncomes.Result == null)
-                throw new Exception("No income found");
-
-            IncomeDetailModel income = _mapper.Map<IncomeDetailModel>(allIncomes.Result.OrderByDescending(x => x.CredtiDate).FirstOrDefault());
-            return income.IncomeBalance;
-        }
-
         /// <summary>
         /// Create dummy income for logged in user
         /// </summary>
         /// <returns></returns>
-        public async Task<ApiResponse> CreateDummyIncome()
+        public async Task<ApiResponse> CreateDummyLimits()
         {
-            IncomeCreateModel model = new IncomeCreateModel()
+            SegmentLimitsCreateModel model = new SegmentLimitsCreateModel()
             {
-                IncomeName = "Test income (Hexaware)",
-                Amount = 30000.00M,
-                CreditCycle = "Monthly",
-                Creditor = "Hexaware Test",
-                CredtiDate = new DateTime(2023, 01, 30),
-                IncomeBalance = 30000.00M
+                SubscriptionLimit = 15000.0M,
+                EmiLimit = 15000.0M
             };
 
-            Income newIncome = _mapper.Map<Income>(model);
-            newIncome.AccountId = User.FDIdentity.AccountId;
+            SegmentLimits newLimits = _mapper.Map<SegmentLimits>(model);
+            newLimits.AccountId = User.FDIdentity.AccountId;
 
             try
             {
-                _response.Result = await _idc.CreateAsync(newIncome);
+                _response.Result = await _sdc.CreateAsync(newLimits);
 
                 _response.StatusCode = HttpStatusCode.OK;
 
