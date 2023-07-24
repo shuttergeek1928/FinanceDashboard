@@ -4,6 +4,7 @@ using FinanceDashboard.Data.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceDashboard.Data.SqlServer.Migrations
 {
     [DbContext(typeof(FinanceDashboardContext))]
-    partial class FinanceDashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20230127173041_addedIncomeModel")]
+    partial class addedIncomeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +103,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                         new
                         {
                             AccountId = 1,
-                            Id = new Guid("4b264e63-687f-4d10-a4ba-703af6b6870d"),
+                            Id = new Guid("53ab364d-587f-4d40-957a-e0b88636b7ce"),
                             CreatedOn = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "atishay1928@outlook.com",
                             FirstName = "Atishay",
@@ -157,28 +160,6 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("Income");
-                });
-
-            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.SegmentLimits", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("EmiLimit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("SubscriptionLimit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("SegmentLimits");
                 });
 
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
@@ -243,7 +224,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4ed63ee2-cce9-4f15-82f9-bc9b619207a7"),
+                            Id = new Guid("2f5bd117-debc-4109-be28-b2a7cee51025"),
                             AccountId = 1,
                             Amount = 500m,
                             BillingDate = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -270,18 +251,6 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.SegmentLimits", b =>
-                {
-                    b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
-                        .WithMany("SegmentLimits")
-                        .HasForeignKey("AccountId")
-                        .HasPrincipalKey("AccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
                 {
                     b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
@@ -297,8 +266,6 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Account", b =>
                 {
                     b.Navigation("Income");
-
-                    b.Navigation("SegmentLimits");
 
                     b.Navigation("Subscriptions");
                 });

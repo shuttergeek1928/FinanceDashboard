@@ -12,7 +12,6 @@ namespace FinanceDashboard.Service.ApiControllers
     public class SubscriptionApiController : ControllerBase
     {
         private readonly SubscriptionController _sc;
-        private readonly AccountDataController _adc;
 
         public SubscriptionApiController(SubscriptionController sc)
         {
@@ -74,12 +73,13 @@ namespace FinanceDashboard.Service.ApiControllers
         /// Create new subscription for an account
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="checkFirst">Use this bool flag to check new total subsciption value before creting, if false create anyways else mark it as true</param>
         /// <returns>A newly create subscription for an account</returns>
         [HttpPost]
         [Route("create/new")]
-        public async Task<ActionResult<ApiResponse>> CreateNewSubscription(SubscriptionCreateModel model)
+        public async Task<ActionResult<ApiResponse>> CreateNewSubscription(SubscriptionCreateModel model, bool checkFirst = true)
         {
-            return Ok(await _sc.CreateNewSubscription(model));
+            return Ok(await _sc.CreateNewSubscription(model, checkFirst));
         }
 
         /// <summary>

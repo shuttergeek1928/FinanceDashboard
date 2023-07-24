@@ -16,14 +16,17 @@ namespace FinanceDashboard.Core.Controllers
         private readonly SubscriptionDataController _sdc;
         public AccountDataController _adc;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IncomeController _ic;
+        private readonly SegmentLimitsController _sldc;
 
-
-        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor)
+        public SubscriptionController(AccountDataController adc, SubscriptionDataController sdc, IHttpContextAccessor httpContextAccessor, IncomeController ic, SegmentLimitsController sldc)
         {
             _adc = adc;
             _mapper = new ObjectMapper().Mapper;
             _response = new();
             _sdc = sdc;
+            _ic = ic;
+            _sldc = sldc;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -32,7 +35,7 @@ namespace FinanceDashboard.Core.Controllers
         /// </summary>nn
         /// <param name="includeChildProperty"></param>
         /// <returns></returns>
-        /// 
+        ///
         public async Task<ApiResponse> GetAllSubscription(string? includeChildProperty = null)
         {
             try
@@ -134,10 +137,19 @@ namespace FinanceDashboard.Core.Controllers
             return _response;
         }
 
-        public async Task<ApiResponse> CreateNewSubscription(SubscriptionCreateModel model)
+        public async Task<ApiResponse> CreateNewSubscription(SubscriptionCreateModel model, bool checkFirst = true)
         {
             Subscription newSubscription = _mapper.Map<Subscription>(model);
             newSubscription.AccountId = User.FDIdentity.AccountId;
+
+            if (checkFirst && !await CheckLatestSubscriptionAmount(newSubscription.Amount))
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotAcceptable;
+                _response.Result = null;
+                _response.Errors = new List<string> { "Can't add this as the new total subscription will be more than your limit" };
+                return _response;
+            }
 
             try
             {
@@ -322,6 +334,22 @@ namespace FinanceDashboard.Core.Controllers
             }
 
             return _response;
+        }
+
+        private async Task<bool> CheckLatestSubscriptionAmount(decimal amt)
+        {
+            var totalAmount = await CalculateTotalAmount(User.FDIdentity.AccountId);
+            var incomeBalance = await _ic.GetBalance();
+            var limit = await _sldc.GetSegmnetLimitDetailsByAccountId(User.FDIdentity.AccountId);
+
+            decimal newSubscriptionTotal = decimal.Parse(totalAmount.Result.ToString()) + amt;
+
+            if (newSubscriptionTotal > limit.Result.FirstOrDefault().SubscriptionLimit || newSubscriptionTotal > incomeBalance)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -3,6 +3,8 @@ using FinanceDashboard.Models.Account;
 using FinanceDashboard.Models.Subscription;
 using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Models.PreLogon;
+using FinanceDashboard.Models.Models.Income;
+using FinanceDashboard.Models.Models.SegmentLimits;
 
 namespace FinanceDashboard.Core
 {
@@ -41,6 +43,16 @@ namespace FinanceDashboard.Core
             CreateMap<Subscription, SubscriptionListModel>().ReverseMap();
             CreateMap<Subscription, SubscriptionCreateModel>().ReverseMap();
             CreateMap<Subscription, SubscriptionUpdateModel>().ReverseMap();
+
+            //Income Mappers
+            CreateMap<Income, IncomeCreateModel>().ReverseMap();
+            CreateMap<Income, IncomeListModel>().ReverseMap();
+            CreateMap<Income, IncomeDetailModel>().ReverseMap();
+            CreateMap<IncomeDetailModel, IncomeListModel>().ReverseMap();
+
+            //Limits Mappers
+            CreateMap<SegmentLimits, SegmentLimitsCreateModel>().ReverseMap();
+            CreateMap<SegmentLimits, SegmentLimitsListModel>().ReverseMap();
         }
     }
 }
