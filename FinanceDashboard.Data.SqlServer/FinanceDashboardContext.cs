@@ -38,6 +38,7 @@ namespace FinanceDashboard.Data.SqlServer
         public DbSet<EMI> Emi { get; set; }
         public DbSet<Asset> Assets { get; set; }
         public DbSet<Audit> Audits { get; set; }
+        public DbSet<Goals> Goals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,6 +52,12 @@ namespace FinanceDashboard.Data.SqlServer
             {
                 table.AuditSequence,
                 table.AuditId
+            });
+
+            builder.Entity<Goals>().HasKey(table => new
+            {
+                table.GoalId,
+                table.Id
             });
 
             builder.Entity<Account>().HasAlternateKey(c => c.Email).HasName("AlternateKey_Email");
@@ -86,6 +93,11 @@ namespace FinanceDashboard.Data.SqlServer
             builder.Entity<Audit>(table =>
             {
                 table.HasOne(x => x.User).WithMany(y => y.Audits).HasForeignKey(z => new { z.AccountId, z.AccountEntityId}).OnDelete(DeleteBehavior.Restrict);
+            });
+            
+            builder.Entity<Goals>(table =>
+            {
+                table.HasOne(x => x.User).WithMany(y => y.Goals).HasForeignKey(z => new { z.AccountId, z.AccountEntityId}).OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

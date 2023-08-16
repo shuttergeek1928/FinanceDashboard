@@ -62,5 +62,6 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public List<EMI> Emi { get; set; }
         public List<Asset> Assets { get; set; }
         public List<Audit> Audits { get; set; }
+        public List<Goals> Goals { get; set; }
     }
 }
