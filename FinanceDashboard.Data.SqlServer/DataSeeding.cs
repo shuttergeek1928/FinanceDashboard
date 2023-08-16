@@ -24,6 +24,7 @@ namespace FinanceDashboard.Data.SqlServer
                 };
             }
         }
+
         public static Subscription SeedSubscription
         {
             get

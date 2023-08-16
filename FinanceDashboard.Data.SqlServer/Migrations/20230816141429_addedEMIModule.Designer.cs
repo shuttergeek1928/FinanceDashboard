@@ -12,17 +12,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceDashboard.Data.SqlServer.Migrations
 {
     [DbContext(typeof(FinanceDashboardContext))]
-    [Migration("20220905191510_InitUserAndSubscription")]
-    partial class InitUserAndSubscription
+    [Migration("20230816141429_addedEMIModule")]
+    partial class addedEMIModule
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Account", b =>
                 {
@@ -30,7 +31,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -115,6 +116,129 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.EMI", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("BillingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CanceledBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CanceledOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CompletionDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmiName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("GstRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("InstallmentDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("InterestRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastUpdateBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Emi");
+                });
+
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Income", b =>
+                {
+                    b.Property<Guid>("IncomeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreditCycle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Creditor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CredtiDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ExpiredBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ExpiringReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Expiry")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("IncomeBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("IncomeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IncomeId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Income");
+                });
+
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.SegmentLimits", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("EmiLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SubscriptionLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("SegmentLimits");
+                });
+
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
                 {
                     b.Property<Guid>("Id")
@@ -138,6 +262,12 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
 
                     b.Property<bool>("IsExpired")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastUpdateBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -186,6 +316,42 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.EMI", b =>
+                {
+                    b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
+                        .WithMany("Emi")
+                        .HasForeignKey("AccountId")
+                        .HasPrincipalKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Income", b =>
+                {
+                    b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
+                        .WithMany("Income")
+                        .HasForeignKey("AccountId")
+                        .HasPrincipalKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.SegmentLimits", b =>
+                {
+                    b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
+                        .WithMany("SegmentLimits")
+                        .HasForeignKey("AccountId")
+                        .HasPrincipalKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Subscription", b =>
                 {
                     b.HasOne("FinanceDashboard.Data.SqlServer.Entities.Account", "User")
@@ -200,6 +366,12 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
 
             modelBuilder.Entity("FinanceDashboard.Data.SqlServer.Entities.Account", b =>
                 {
+                    b.Navigation("Emi");
+
+                    b.Navigation("Income");
+
+                    b.Navigation("SegmentLimits");
+
                     b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
