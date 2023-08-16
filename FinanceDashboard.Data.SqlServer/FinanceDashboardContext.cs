@@ -70,7 +70,7 @@ namespace FinanceDashboard.Data.SqlServer
             {
                 table.HasOne(x => x.User).WithMany(y => y.Emi).HasPrincipalKey(z => z.AccountId).OnDelete(DeleteBehavior.Restrict);
             });
-
+            
             builder.Entity<Asset>(table =>
             {
                 table.HasOne(x => x.User).WithMany(y => y.Assets).HasPrincipalKey(z => z.AccountId).OnDelete(DeleteBehavior.Restrict);
