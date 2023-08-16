@@ -59,5 +59,6 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public List<Subscription> Subscriptions { get; set; }
         public List<Income> Income { get; set; }
         public List<SegmentLimits> SegmentLimits { get; set; }
+        public List<EMI> Emi { get; set; }
     }
 }

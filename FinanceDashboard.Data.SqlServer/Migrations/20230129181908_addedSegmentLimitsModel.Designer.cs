@@ -103,7 +103,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                         new
                         {
                             AccountId = 1,
-                            Id = new Guid("4b264e63-687f-4d10-a4ba-703af6b6870d"),
+                            Id = new Guid("53ab364d-587f-4d40-957a-e0b88636b7ce"),
                             CreatedOn = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "atishay1928@outlook.com",
                             FirstName = "Atishay",
@@ -246,7 +246,7 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4ed63ee2-cce9-4f15-82f9-bc9b619207a7"),
+                            Id = new Guid("2f5bd117-debc-4109-be28-b2a7cee51025"),
                             AccountId = 1,
                             Amount = 500m,
                             BillingDate = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
