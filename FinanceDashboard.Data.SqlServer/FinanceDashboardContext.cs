@@ -37,6 +37,7 @@ namespace FinanceDashboard.Data.SqlServer
         public DbSet<SegmentLimits> SegmentLimits { get; set; }
         public DbSet<EMI> Emi { get; set; }
         public DbSet<Asset> Assets { get; set; }
+        public DbSet<Audit> Audits { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,6 +45,12 @@ namespace FinanceDashboard.Data.SqlServer
             {
                 table.AccountId,
                 table.Id
+            });
+
+            builder.Entity<Audit>().HasKey(table => new
+            {
+                table.AuditSequence,
+                table.AuditId
             });
 
             builder.Entity<Account>().HasAlternateKey(c => c.Email).HasName("AlternateKey_Email");
@@ -74,6 +81,11 @@ namespace FinanceDashboard.Data.SqlServer
             builder.Entity<Asset>(table =>
             {
                 table.HasOne(x => x.User).WithMany(y => y.Assets).HasPrincipalKey(z => z.AccountId).OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<Audit>(table =>
+            {
+                table.HasOne(x => x.User).WithMany(y => y.Audits).HasForeignKey(z => new { z.AccountId, z.AccountEntityId}).OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
