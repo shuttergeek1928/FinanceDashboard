@@ -31,6 +31,8 @@ builder.Services.AddScoped<IncomeDataContoller>();
 builder.Services.AddScoped<IncomeController>();
 builder.Services.AddScoped<SeggmentLimitsDataContorller>();
 builder.Services.AddScoped<SegmentLimitsController>();
+builder.Services.AddScoped<EmiDataContoller>();
+builder.Services.AddScoped<EmiController>();
 
 
 

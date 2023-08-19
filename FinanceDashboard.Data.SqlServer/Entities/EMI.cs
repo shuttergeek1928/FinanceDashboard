@@ -30,7 +30,7 @@ namespace FinanceDashboard.Data.SqlServer.Entities
         public DateTime BillingDate { get; set; }
 
         [Required]
-        public DateTime? InstallmentDate { get; set; }
+        public int InstallmentDate { get; set; }
 
         [Required]
         public DateTime? CompletionDate { get; set; }

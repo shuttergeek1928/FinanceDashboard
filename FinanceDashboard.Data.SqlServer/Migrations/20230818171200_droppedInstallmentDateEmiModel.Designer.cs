@@ -4,6 +4,7 @@ using FinanceDashboard.Data.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceDashboard.Data.SqlServer.Migrations
 {
     [DbContext(typeof(FinanceDashboardContext))]
-    partial class FinanceDashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20230818171200_droppedInstallmentDateEmiModel")]
+    partial class droppedInstallmentDateEmiModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,9 +243,6 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
 
                     b.Property<decimal>("GstRate")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("InstallmentDate")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("InterestRate")
                         .HasColumnType("decimal(18,2)");
