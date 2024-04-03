@@ -5,6 +5,7 @@ using FinanceDashboard.Data.SqlServer.Entities;
 using FinanceDashboard.Models.PreLogon;
 using FinanceDashboard.Models.Models.Income;
 using FinanceDashboard.Models.Models.SegmentLimits;
+using FinanceDashboard.Models.Models.Emi;
 
 namespace FinanceDashboard.Core
 {
@@ -53,6 +54,12 @@ namespace FinanceDashboard.Core
             //Limits Mappers
             CreateMap<SegmentLimits, SegmentLimitsCreateModel>().ReverseMap();
             CreateMap<SegmentLimits, SegmentLimitsListModel>().ReverseMap();
+
+            //Emi Mappers
+            CreateMap<EMI, EmiCreateModel>().ReverseMap();
+            CreateMap<EMI, EmiListModel>().ReverseMap();
+            CreateMap<EMI, EmiDetaiModel>().ReverseMap();
+            CreateMap<EmiDetaiModel, EmiListModel>().ReverseMap();
         }
     }
 }

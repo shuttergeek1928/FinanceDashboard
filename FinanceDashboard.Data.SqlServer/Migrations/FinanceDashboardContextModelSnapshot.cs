@@ -241,9 +241,8 @@ namespace FinanceDashboard.Data.SqlServer.Migrations
                     b.Property<decimal>("GstRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("InstallmentDate")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
+                    b.Property<int>("InstallmentDate")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("InterestRate")
                         .HasColumnType("decimal(18,2)");
